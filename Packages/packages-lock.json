@@ -183,7 +183,7 @@
       "url": "https://packages.unity.cn"
     },
     "com.veriorpies.parrelsync": {
-      "version": "file:C:/Users/phyacy/Downloads/ParrelSync-master/ParrelSync-master/ParrelSync",
+      "version": "file:../For_git/__ParrelSync",
       "depth": 0,
       "source": "local",
       "dependencies": {}
