@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using Unity.Netcode;
 
-public class TitleScreenManager : MonoBehaviour
+namespace SG
 {
-    // Start is called before the first frame update
-    void Start()
+   public class TitleScreenManager : MonoBehaviour
     {
-        
-    }
+        public void StartNetworkAsHost()
+        {
+            Debug.Log("Start Host!"); 
+            NetworkManager.Singleton.StartHost();
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        public void StartNewGame()
+        {
+            StartCoroutine(WorldSaveGameManager.instance.LoadNewGame());
+        }
+    } 
+
 }
+
