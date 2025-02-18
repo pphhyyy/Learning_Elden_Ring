@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Elden_Ring_learning.sln"
+    "dotnet.defaultSolution": "Learning_Elden_Ring.sln"
 }
