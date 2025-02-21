@@ -24,6 +24,29 @@ public class PlayerManager : CharacterManager
 
             playerLocalmotionManager.HandleAllMovement();
         }
+
+
+        protected override void LateUpdate()
+        {
+            //如果不是player 的本机，就不要做任何 camera 更新工作 
+            if(!IsOwner) 
+                return; 
+            base.LateUpdate();
+
+            PlayerCamera.instance.HandleAllCameraActions();
+        }
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+
+            if(IsOwner) 
+            {
+                PlayerCamera.instance.player = this; //如果这个player object 是 本机的，那么就给它的 playerCamera 的 player 变量复制到 this  
+            }
+        }
+
+         
+
     }
 
 }

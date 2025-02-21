@@ -44,6 +44,9 @@ namespace PA
             }
         }
 
-
+        protected virtual void LateUpdate()
+        {
+            
+        }
     }
 }

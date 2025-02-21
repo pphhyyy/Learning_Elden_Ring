@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using PA;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,11 +15,16 @@ public class PlayerInputManager : MonoBehaviour
     public static PlayerInputManager instance;
     PlayerControls playerControls;
 
-    [SerializeField] Vector2 movement;
+    [Header("Position MoveMent Input")]
+    [SerializeField] Vector2 movementInput;
     public float vertialInput;
     public float horizontalInput;
     public float moveAmount; // 移动输入的总量 
 
+    [Header("Camera MoveMent Input")]
+    [SerializeField] Vector2 cameraInput;
+    public float cameraVertialInput;
+    public float cameraHorizontalInput;
     private void Awake()
     {
         if(instance == null)
@@ -58,7 +64,9 @@ public class PlayerInputManager : MonoBehaviour
             playerControls = new PlayerControls();
 
             //这里从 playerControls 设置好在内容中 读取输入的值,然后写入上面设置的变量 movement中 
-            playerControls.PlayerMovement.Movement.performed += i  => movement = i.ReadValue<Vector2>();
+            playerControls.PlayerMovement.Movement.performed += i  => movementInput = i.ReadValue<Vector2>();
+
+            playerControls.PlayerCamera.Movement.performed += i  => cameraInput  = i.ReadValue<Vector2>();
         }
         playerControls.Enable(); 
     }
@@ -88,16 +96,17 @@ public class PlayerInputManager : MonoBehaviour
         }
             
     }
-        private void Update()
+    private void Update()
     {
-        HandMovementInput();
+        HandlePositionMovementInput();
+        HandleCameraMovementInput();
     }
 
 
-    private void HandMovementInput()
+    private void HandlePositionMovementInput()
     {
-        vertialInput = movement.y;
-        horizontalInput = movement.x;
+        vertialInput = movementInput.y;
+        horizontalInput = movementInput.x;
         // 但 上下键和 左右键 同时按下时,通过 clamp01 , 将两者的输入值 限制在 0 到 1 上 ,避免45度方向的移动快于 x y 方向 
         moveAmount = Mathf.Clamp01(Mathf.Abs(vertialInput) + Mathf.Abs(horizontalInput));
 
@@ -111,6 +120,13 @@ public class PlayerInputManager : MonoBehaviour
         {
             moveAmount = 1; 
         }
+    }
+
+
+    private void HandleCameraMovementInput()
+    {
+        cameraVertialInput = cameraInput.y;
+        cameraHorizontalInput = cameraInput.x;
     }
 }
 
