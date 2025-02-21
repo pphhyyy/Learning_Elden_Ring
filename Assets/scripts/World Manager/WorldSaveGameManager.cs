@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 
-namespace SG
+namespace PA
 {
     public class WorldSaveGameManager : MonoBehaviour
     {
@@ -36,6 +36,11 @@ namespace SG
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(worldSceneIndex);
 
             yield return null; 
+        }
+
+        public int GetWorldSceneIndex ()
+        {
+            return worldSceneIndex;
         }
     }
 }

@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Netcode;
 
-namespace SG
+namespace PA
 {
    public class TitleScreenManager : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-namespace SG
+namespace PA
 {
     public class PlayerUIManager : MonoBehaviour
     {   
