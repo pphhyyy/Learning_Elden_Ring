@@ -6,12 +6,14 @@ namespace PA
 {
 public class PlayerManager : CharacterManager
 {
-        PlayerLocalmotionManager playerLocalmotionManager;
+        [HideInInspector] public PlayerLocalmotionManager playerLocalmotionManager;
+        [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
         protected override void Awake()
         {
             base.Awake();
             //只有玩家会做 普通 character 不会做的事
             playerLocalmotionManager = GetComponent<PlayerLocalmotionManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         }
 
         protected override void Update()
@@ -23,6 +25,7 @@ public class PlayerManager : CharacterManager
                 return;
 
             playerLocalmotionManager.HandleAllMovement();
+
         }
 
 
@@ -42,6 +45,7 @@ public class PlayerManager : CharacterManager
             if(IsOwner) 
             {
                 PlayerCamera.instance.player = this; //如果这个player object 是 本机的，那么就给它的 playerCamera 的 player 变量复制到 this  
+                PlayerInputManager.instance.player = this;
             }
         }
 

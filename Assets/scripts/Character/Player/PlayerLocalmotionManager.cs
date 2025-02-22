@@ -26,6 +26,27 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
 
         player = GetComponent<PlayerManager>();
     }
+
+    protected override void Update()
+    {
+        base.Update();
+        if (player.IsOwner)
+        {
+            player.characterNetworkManager.verticalMovement.Value = vertialMovement;
+            player.characterNetworkManager.horizontalMovement.Value = horizontalMovement;
+            player.characterNetworkManager.moveAmount.Value = moveAmount;
+        }
+        else
+        {
+            vertialMovement = player.characterNetworkManager.verticalMovement.Value;
+            horizontalMovement = player.characterNetworkManager.horizontalMovement.Value;
+            moveAmount = player.characterNetworkManager.moveAmount.Value;
+
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0,moveAmount);
+        }
+
+    }
+
     public void HandleAllMovement()
     {
         //处理所有移动相关
@@ -37,11 +58,11 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
         HandleRotation();
     }
 
-    private void GetVerticalAndHorizontalInputs()
+    private void GetMovementValues()
     {
         vertialMovement = PlayerInputManager.instance.vertialInput;
         horizontalMovement = PlayerInputManager.instance.horizontalInput;
-
+        moveAmount = PlayerInputManager.instance.moveAmount;
         //CLAMP
     }
 
@@ -49,7 +70,7 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
     private void HandleGroundMovement()
     {
 
-        GetVerticalAndHorizontalInputs();
+        GetMovementValues();
         //这里玩家移动的方向 将有 player camera 来 决定 
         moveDirection = PlayerCamera.instance.transform.forward * vertialMovement;
         moveDirection = moveDirection + PlayerCamera.instance.transform.right * horizontalMovement;

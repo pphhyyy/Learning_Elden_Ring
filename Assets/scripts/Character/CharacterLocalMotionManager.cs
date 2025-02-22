@@ -11,6 +11,12 @@ public class CharacterLocalMotionManager : MonoBehaviour
     {
         
     }
+
+    protected virtual void Update()
+    {
+        
+    }
+
 }
 
 }

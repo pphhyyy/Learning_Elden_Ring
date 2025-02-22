@@ -13,6 +13,8 @@ public class PlayerInputManager : MonoBehaviour
 {
     //建立单例 
     public static PlayerInputManager instance;
+
+    public PlayerManager player;
     PlayerControls playerControls;
 
     [Header("Position MoveMent Input")]
@@ -120,6 +122,12 @@ public class PlayerInputManager : MonoBehaviour
         {
             moveAmount = 1; 
         }
+
+
+        if(player == null)
+            return;
+        //这里直接传 0 和 moveAmount 是因为正常情况下,角色不会 向左先后 那样走,只有在 锁定某个目标的时候,才会出现那样的动作
+        player.playerAnimatorManager.UpdateAnimatorMovementParameters(0,moveAmount);
     }
 
 

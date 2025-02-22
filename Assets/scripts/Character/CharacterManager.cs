@@ -8,14 +8,17 @@ namespace PA
     public class CharacterManager : NetworkBehaviour
     {
 
-        public CharacterController characterController;
+        [HideInInspector] public CharacterController characterController;
 
-        CharacterNetworkManager characterNetworkManager;
+        [HideInInspector] public Animator animator;
+        [HideInInspector] public CharacterNetworkManager characterNetworkManager;
         protected virtual void Awake()
         {
             DontDestroyOnLoad(gameObject);
+             
             characterController = GetComponent<CharacterController>();
             characterNetworkManager  = GetComponent<CharacterNetworkManager>();
+            animator = GetComponent<Animator>();
         }
 
         protected virtual void Update()
