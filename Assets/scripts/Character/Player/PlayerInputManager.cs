@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using PA;
@@ -17,16 +17,22 @@ public class PlayerInputManager : MonoBehaviour
     public PlayerManager player;
     PlayerControls playerControls;
 
+    [Header("Camera MoveMent Input")]
+    [SerializeField] Vector2 cameraInput;
+    public float cameraVertialInput;
+    public float cameraHorizontalInput;
+
+
     [Header("Position MoveMent Input")]
     [SerializeField] Vector2 movementInput;
     public float vertialInput;
     public float horizontalInput;
     public float moveAmount; // 移动输入的总量 
 
-    [Header("Camera MoveMent Input")]
-    [SerializeField] Vector2 cameraInput;
-    public float cameraVertialInput;
-    public float cameraHorizontalInput;
+    [Header("Player Action Input")]
+    [SerializeField] bool dodgeInput = false; 
+
+
     private void Awake()
     {
         if(instance == null)
@@ -67,8 +73,8 @@ public class PlayerInputManager : MonoBehaviour
 
             //这里从 playerControls 设置好在内容中 读取输入的值,然后写入上面设置的变量 movement中 
             playerControls.PlayerMovement.Movement.performed += i  => movementInput = i.ReadValue<Vector2>();
-
             playerControls.PlayerCamera.Movement.performed += i  => cameraInput  = i.ReadValue<Vector2>();
+            playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;  
         }
         playerControls.Enable(); 
     }
@@ -100,12 +106,20 @@ public class PlayerInputManager : MonoBehaviour
     }
     private void Update()
     {
-        HandlePositionMovementInput();
-        HandleCameraMovementInput();
+        HandleAllInput();
+    }
+
+    private void HandleAllInput()
+    {
+         HandlePlayerMovementInput();
+         HandleCameraMovementInput();
+         HandleDodgeMovement();
     }
 
 
-    private void HandlePositionMovementInput()
+    //MOVEMENT 
+
+    private void HandlePlayerMovementInput()
     {
         vertialInput = movementInput.y;
         horizontalInput = movementInput.x;
@@ -135,6 +149,18 @@ public class PlayerInputManager : MonoBehaviour
     {
         cameraVertialInput = cameraInput.y;
         cameraHorizontalInput = cameraInput.x;
+    }
+
+    //ACTION 
+
+    private void HandleDodgeMovement() //Dodge 躲闪 , 移动中按下就是翻滚，原地按下就是后退 
+    {  
+        if(dodgeInput == true) // 如果按下了dodge 键
+        {
+            dodgeInput = false; // 按下一次就执行一次 
+            //执行dodge 任务 （在localmotion中完成）
+            player.playerLocalmotionManager.AttemptToPerfomDodge();
+        }
     }
 }
 

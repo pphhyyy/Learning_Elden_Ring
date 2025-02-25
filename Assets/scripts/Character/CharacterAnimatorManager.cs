@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Unity.Netcode;
 namespace PA
 {
     public class CharacterAnimatorManager : MonoBehaviour
@@ -87,5 +87,26 @@ namespace PA
             // character.animator.SetFloat("Vertical",snappedVertical);
 
         }
-    }
+    
+        public virtual void PlayTargetActionAnimtion 
+            (string targteAnimation , 
+             bool  isPermormingAction , 
+             bool applyRootMotion = true , 
+             bool canRotate = false,  
+             bool canMove = false ) 
+        {   
+            character.applyRootMotion = applyRootMotion; //要为目标动作播放的动画，是否要启动root motion 功能，这里默认为true ；
+            character.animator.CrossFade(targteAnimation , 0.2f);
+
+            //这里 isPermormingAction 表示当前对象正在执行动画，其他动作不应该打断他的动画播放 
+            //也就是是否允许停止当前动画的播放，转而去执行下一个动画
+            character.isPerfromingAction = isPermormingAction;
+            //控制在 播放动作动画的时候，不能旋转也不能移动
+            character.canMove = canMove;
+            character.canRotate = canRotate;
+
+            //还需要告诉 网络端(服务器 )，我们这边的角色在他们哪里要播放动画，不然角色动画效果就只有本地能看见  
+            character.characterNetworkManager.NotifyTheServerOfActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targteAnimation,applyRootMotion);
+        }
+     }
 }

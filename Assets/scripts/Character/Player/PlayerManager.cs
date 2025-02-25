@@ -19,7 +19,7 @@ public class PlayerManager : CharacterManager
         protected override void Update()
         {
             base.Update();
-
+            Debug.Log("Remote Debug from Mac ");
             //如果当前对象不属于本机,就不要对他更新移动 
             if(!IsOwner)
                 return;

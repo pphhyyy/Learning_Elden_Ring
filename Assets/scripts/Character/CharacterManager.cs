@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
@@ -12,9 +12,17 @@ namespace PA
 
         [HideInInspector] public Animator animator;
         [HideInInspector] public CharacterNetworkManager characterNetworkManager;
+
+
+        [Header("Flag")]
+        public bool isPerfromingAction = false; // 是否正在执行动作，如果是，就不应该接受其他动作的触发 
+        public bool canRotate = true;  
+        public bool canMove = true;
+        public bool applyRootMotion = false;
+        
         protected virtual void Awake()
         {
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); 
              
             characterController = GetComponent<CharacterController>();
             characterNetworkManager  = GetComponent<CharacterNetworkManager>();

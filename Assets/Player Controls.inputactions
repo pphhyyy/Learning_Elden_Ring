@@ -81,7 +81,7 @@
                     "name": "Movement",
                     "type": "PassThrough",
                     "id": "16f4a617-01c5-45c6-8d50-43795839c639",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Delta",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -89,59 +89,43 @@
             ],
             "bindings": [
                 {
-                    "name": "Right Stick",
-                    "id": "bbf21595-6887-49cf-b20d-06c4dcbda3cf",
-                    "path": "2DVector(mode=2)",
+                    "name": "",
+                    "id": "0b26ceaa-c17a-43e7-a8b7-c9b0018d6556",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "Player Actions",
+            "id": "cbbde62e-915f-435a-acba-092beae102d5",
+            "actions": [
                 {
-                    "name": "up",
-                    "id": "60c2a374-1838-4291-b033-24fd5531c8b8",
-                    "path": "<Mouse>/delta/up",
+                    "name": "Dodge",
+                    "type": "Button",
+                    "id": "2ed21f8f-4ca6-4dca-9f20-1a360b975ecd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "73238c58-5be1-4eb2-8346-f007c5566d83",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "Dodge",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "68e68fe9-3cdd-48cc-a710-1759cf5a930d",
-                    "path": "<Mouse>/delta/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "8da535fe-c993-4fbf-b6bf-35c0ba902a63",
-                    "path": "<Mouse>/delta/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "ee347f6c-8fdf-4ab2-8599-259b9e3ac519",
-                    "path": "<Mouse>/delta/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 }
             ]
         }
