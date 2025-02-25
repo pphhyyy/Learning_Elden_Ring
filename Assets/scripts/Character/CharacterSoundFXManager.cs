@@ -15,7 +15,7 @@ namespace PA
 
         public void PlayRollSoundFX()
         {
-            
+            audioSource.PlayOneShot(WorldSoundFXManager.instance.rollSFX);
         }
     }
 
