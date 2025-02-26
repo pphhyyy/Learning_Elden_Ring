@@ -29,6 +29,9 @@ namespace PA
         public NetworkVariable<float> moveAmount = new NetworkVariable<float>(0,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
 
 
+        [Header("Flags")]
+        public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>(false,NetworkVariableReadPermission.Everyone,NetworkVariableWritePermission.Owner);
+
 
         protected virtual void Awake()
         {
@@ -39,7 +42,7 @@ namespace PA
         //从任何客户端调用的函数，将信息从客户端到服务器 每当要播放动画的时候，都会请求服务器 RPC
         //所有charatcer 调用 PlayTargetActionAnimtion 的时候 都会调用一次  NotifyTheServerOfActionAnimationServerRpc 
         //以通知服务器，而服务器 用客户端传递过来的参数 调用 PlayActionAnimationForAllClientsClientRpc
-        //让所有clinet 都更新对应的动画 
+        //让所有clinet 都更新对应的动画  
         [ServerRpc]
         public void NotifyTheServerOfActionAnimationServerRpc(ulong clientID,string animationID,bool applyRootMotion)
         {

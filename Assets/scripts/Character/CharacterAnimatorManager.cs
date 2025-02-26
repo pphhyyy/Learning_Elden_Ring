@@ -8,22 +8,33 @@ namespace PA
     {
         CharacterManager character;
 
-        float vertical;
-        float horizontal;
+        int vertical;
+        int horizontal;
 
         protected virtual  void Awake()
         {
             character = GetComponent<CharacterManager>();
+
+            //用string to hash 的方式，在下面 Setfloat 的时候可以直接穿入 hash 值，相比穿入 string 更加节省内存
+            vertical = Animator.StringToHash("Vertical");
+            horizontal = Animator.StringToHash("Horizontal");
         }
 
         //由playerinputmanger 直接调用 
-        public void UpdateAnimatorMovementParameters(float horizontalValue , float verticalValue)
+        public void UpdateAnimatorMovementParameters(float horizontalValue , float verticalValue,bool isSprinting)
         {
+            float horizontalAmount = horizontalValue;
+            float verticalAmount = verticalValue;
+            if(isSprinting)
+            {
+                verticalAmount =2;
+            } 
+            
             //OPTION 1 
             //按原本的值输入,最后的动画会有混合效果 
             //但在这个项目中,我们本来就在 player input manager 里面 设置了 输入值 的钳制 , 输入值 只有 0 0.5 1 所以实际上这里不需要 option 2 
-            character.animator.SetFloat("Horizontal",horizontalValue,0.1f,Time.deltaTime);
-            character.animator.SetFloat("Vertical",verticalValue,0.1f,Time.deltaTime);
+            character.animator.SetFloat(horizontal,horizontalAmount,0.1f,Time.deltaTime);
+            character.animator.SetFloat(vertical,verticalAmount,0.1f,Time.deltaTime);
             // 这里设置 0.1f,Time.deltaTime 可以让动画 从 idle 到 walk 的过渡更平滑一些 
 
             //OPTION 2 

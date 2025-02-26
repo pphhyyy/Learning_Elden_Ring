@@ -19,7 +19,9 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
     private Vector3 targetRotationDirection;
     [SerializeField] float walkingSpeed = 2;
     [SerializeField] float runningSpeed = 5;
+    [SerializeField] float sprintingSpeed = 7 ;
     [SerializeField] float rotationSpeed = 15;
+    
      
      [Header("Dodge")]
      private Vector3 rollDirection;
@@ -46,7 +48,7 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
             horizontalMovement = player.characterNetworkManager.horizontalMovement.Value;
             moveAmount = player.characterNetworkManager.moveAmount.Value;
 
-            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0,moveAmount);
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0,moveAmount,player.playerNetworkManager.isSprinting.Value);
         }
 
     }
@@ -84,17 +86,25 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
         //unity y 方向 表示 垂直于 "地面"的向上 , 所以这里 y 方向 需要归零 
         moveDirection.y = 0;
 
-        if(PlayerInputManager.instance.moveAmount > 0.5f  )
+        if(player.playerNetworkManager.isSprinting.Value)
         {
-            // 跑步 
-            player.characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
+            player.characterController.Move(moveDirection * sprintingSpeed * Time.deltaTime);
         }
-        else if (PlayerInputManager.instance.moveAmount <= 0.5f  )
+        else
         {
-            // 走 
-            player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
+            if(PlayerInputManager.instance.moveAmount > 0.5f  )
+            {
+                // 跑步 
+                player.characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
+            }   
+            else if (PlayerInputManager.instance.moveAmount <= 0.5f  )
+            {   
+                // 走 
+                player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
+            }
+        }
 
-        }
+
     }
 
     private void HandleRotation()
@@ -144,6 +154,21 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
             player.playerAnimatorManager.PlayTargetActionAnimtion("Back_Step_01",true,true);
         }
         
+    }
+
+    public void HandleSpriting()
+    {
+        if (player.isPerfromingAction)
+        {
+            player.playerNetworkManager.isSprinting.Value = false;
+        }
+
+        //如果player 没有耐力了，也不应该设置 sprint 为 true 
+        if(moveAmount >= 0.5f)
+            player.playerNetworkManager.isSprinting.Value = true;
+        else
+            player.playerNetworkManager.isSprinting.Value = false;
+        //只有player 正在 moving 的时候，按下对应的键才能设置 sprint 为 true ， 否则就应该将其设置为 false 
     }
 }
 

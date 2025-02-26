@@ -560,6 +560,7 @@ MonoBehaviour:
   applyRootMotion: 0
   playerLocalmotionManager: {fileID: 0}
   playerAnimatorManager: {fileID: 0}
+  playerNetworkManager: {fileID: 0}
 --- !u!114 &-8044199900284462566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -585,6 +586,8 @@ MonoBehaviour:
     m_InternalValue: 0
   moveAmount:
     m_InternalValue: 0
+  isSprinting:
+    m_InternalValue: 0
 --- !u!114 &-1111893607795190316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -602,6 +605,7 @@ MonoBehaviour:
   moveAmount: 0
   walkingSpeed: 2
   runningSpeed: 5
+  sprintingSpeed: 7
   rotationSpeed: 15
 --- !u!143 &-4331485654322875563
 CharacterController:

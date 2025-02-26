@@ -31,7 +31,7 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("Player Action Input")]
     [SerializeField] bool dodgeInput = false; 
-
+    [SerializeField] bool sprintInput = false; 
 
     private void Awake()
     {
@@ -75,6 +75,10 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerMovement.Movement.performed += i  => movementInput = i.ReadValue<Vector2>();
             playerControls.PlayerCamera.Movement.performed += i  => cameraInput  = i.ReadValue<Vector2>();
             playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;  
+            //这里 sprint 是按下设置true，抬起设置false
+            playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;  
+            playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;  
+    
         }
         playerControls.Enable(); 
     }
@@ -114,6 +118,7 @@ public class PlayerInputManager : MonoBehaviour
          HandlePlayerMovementInput();
          HandleCameraMovementInput();
          HandleDodgeMovement();
+         HandleSpriting(); 
     }
 
 
@@ -141,7 +146,7 @@ public class PlayerInputManager : MonoBehaviour
         if(player == null)
             return;
         //这里直接传 0 和 moveAmount 是因为正常情况下,角色不会 向左先后 那样走,只有在 锁定某个目标的时候,才会出现那样的动作
-        player.playerAnimatorManager.UpdateAnimatorMovementParameters(0,moveAmount);
+        player.playerAnimatorManager.UpdateAnimatorMovementParameters(0,moveAmount,player.playerNetworkManager.isSprinting.Value);
     }
 
 
@@ -155,12 +160,25 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleDodgeMovement() //Dodge 躲闪 , 移动中按下就是翻滚，原地按下就是后退 
     {  
-        if(dodgeInput == true) // 如果按下了dodge 键
+        if(dodgeInput) // 如果按下了dodge 键
         {
             dodgeInput = false; // 按下一次就执行一次 
             //执行dodge 任务 （在localmotion中完成）
             player.playerLocalmotionManager.AttemptToPerfomDodge();
         }
+    }
+
+    private void HandleSpriting()
+    {
+         if(sprintInput)
+         {
+            //处理sprint 相关操作
+            player.playerLocalmotionManager.HandleSpriting();
+         }
+         else
+         {
+            player.playerNetworkManager.isSprinting.Value = false;
+         }
     }
 }
 

@@ -8,12 +8,15 @@ public class PlayerManager : CharacterManager
 {
         [HideInInspector] public PlayerLocalmotionManager playerLocalmotionManager;
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
+        [HideInInspector] public PlayerNetworkManager playerNetworkManager; 
+
         protected override void Awake()
         {
             base.Awake();
             //只有玩家会做 普通 character 不会做的事
             playerLocalmotionManager = GetComponent<PlayerLocalmotionManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerNetworkManager = GetComponent<PlayerNetworkManager>(); 
         }
 
         protected override void Update()
