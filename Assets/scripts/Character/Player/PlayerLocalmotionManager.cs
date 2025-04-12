@@ -21,10 +21,12 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
     [SerializeField] float runningSpeed = 5;
     [SerializeField] float sprintingSpeed = 7 ;
     [SerializeField] float rotationSpeed = 15;
+    [SerializeField] int sprintingStaminaCost = 8;
     
      
      [Header("Dodge")]
      private Vector3 rollDirection;
+     [SerializeField] float dodgeStaminaCost = 25; 
 
     protected override void Awake()
     {
@@ -131,6 +133,8 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
     {
         if(player.isPerfromingAction)
             return; // 如果player当前正在执行动作 就不应该接受后面这些东西，直接返回
+        if(player.playerNetworkManager.currentStamina.Value <=0) // 耐力为零 不能翻滚
+            return;
 
         if(PlayerInputManager.instance.moveAmount > 0) //如果是向前移动的时候 按下 dodge 键，就将让player 转向 camera 的forward 方向
         {
@@ -153,14 +157,20 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
             //播放向后跳的动画
             player.playerAnimatorManager.PlayTargetActionAnimtion("Back_Step_01",true,true);
         }
-        
+        player.playerNetworkManager.currentStamina.Value -= dodgeStaminaCost;
     }
 
-    public void HandleSpriting()
+    public void HandleSprinting()
     {
         if (player.isPerfromingAction)
         {
             player.playerNetworkManager.isSprinting.Value = false;
+        }
+
+        if (player.playerNetworkManager.currentStamina.Value <= 0)
+        {
+            player.playerNetworkManager.isSprinting.Value = false;
+            return;
         }
 
         //如果player 没有耐力了，也不应该设置 sprint 为 true 
@@ -169,6 +179,11 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
         else
             player.playerNetworkManager.isSprinting.Value = false;
         //只有player 正在 moving 的时候，按下对应的键才能设置 sprint 为 true ， 否则就应该将其设置为 false 
+
+        if(player.playerNetworkManager.isSprinting.Value)
+        {
+            player.playerNetworkManager.currentStamina.Value -= sprintingStaminaCost * Time.deltaTime;
+        }
     }
 }
 

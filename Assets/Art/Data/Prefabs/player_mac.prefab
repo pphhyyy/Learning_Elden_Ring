@@ -494,6 +494,7 @@ GameObject:
   - component: {fileID: -400383151830251850}
   - component: {fileID: -574936901803238996}
   - component: {fileID: 2900904484837642250}
+  - component: {fileID: 2164291305850148199}
   m_Layer: 0
   m_Name: player_mac
   m_TagString: Untagged
@@ -561,6 +562,7 @@ MonoBehaviour:
   playerLocalmotionManager: {fileID: 0}
   playerAnimatorManager: {fileID: 0}
   playerNetworkManager: {fileID: 0}
+  playerStatsManager: {fileID: 0}
 --- !u!114 &-8044199900284462566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,6 +590,12 @@ MonoBehaviour:
     m_InternalValue: 0
   isSprinting:
     m_InternalValue: 0
+  endurance:
+    m_InternalValue: 10
+  currentStamina:
+    m_InternalValue: 0
+  maxStamina:
+    m_InternalValue: 0
 --- !u!114 &-1111893607795190316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,6 +615,8 @@ MonoBehaviour:
   runningSpeed: 5
   sprintingSpeed: 7
   rotationSpeed: 15
+  sprintingStaminaCost: 10
+  dodgeStaminaCost: 25
 --- !u!143 &-4331485654322875563
 CharacterController:
   m_ObjectHideFlags: 0
@@ -766,6 +776,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a00ebdb55be077841a7af1695415430d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2164291305850148199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914073143726340837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe5a1a0057d411468368afebf2215fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staminaRegenAmount: 2
+  staminaRegenerationDelay: 2
 --- !u!1 &2043832879364774956
 GameObject:
   m_ObjectHideFlags: 0

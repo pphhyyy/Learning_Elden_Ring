@@ -9,6 +9,7 @@ public class PlayerManager : CharacterManager
         [HideInInspector] public PlayerLocalmotionManager playerLocalmotionManager;
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerNetworkManager playerNetworkManager; 
+        [HideInInspector] public PlayerStatsManager playerStatsManager;
 
         protected override void Awake()
         {
@@ -17,6 +18,9 @@ public class PlayerManager : CharacterManager
             playerLocalmotionManager = GetComponent<PlayerLocalmotionManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerNetworkManager = GetComponent<PlayerNetworkManager>(); 
+            playerStatsManager = GetComponent<PlayerStatsManager>();
+
+            
         }
 
         protected override void Update()
@@ -34,12 +38,14 @@ public class PlayerManager : CharacterManager
 
         protected override void LateUpdate()
         {
-            //如果不是player 的本机，就不要做任何 camera 更新工作 
+
             if(!IsOwner) 
                 return; 
             base.LateUpdate();
 
             PlayerCamera.instance.HandleAllCameraActions();
+            // 恢复耐力
+            playerStatsManager.RegenarateStamina(); 
         }
         public override void OnNetworkSpawn()
         {
@@ -49,6 +55,15 @@ public class PlayerManager : CharacterManager
             {
                 PlayerCamera.instance.player = this; //如果这个player object 是 本机的，那么就给它的 playerCamera 的 player 变量复制到 this  
                 PlayerInputManager.instance.player = this;
+
+                playerNetworkManager.currentStamina.OnValueChanged += PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue;
+                playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenTimer;
+
+
+                playerNetworkManager.maxStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
+                playerNetworkManager.currentStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
+                
+                PlayerUIManager.instance.playerUIHudManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
             }
         }
 

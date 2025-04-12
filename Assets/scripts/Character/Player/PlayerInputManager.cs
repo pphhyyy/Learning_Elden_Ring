@@ -173,7 +173,7 @@ public class PlayerInputManager : MonoBehaviour
          if(sprintInput)
          {
             //处理sprint 相关操作
-            player.playerLocalmotionManager.HandleSpriting();
+            player.playerLocalmotionManager.HandleSprinting();
          }
          else
          {

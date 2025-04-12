@@ -19,6 +19,8 @@ namespace PA
         public bool canRotate = true;  
         public bool canMove = true;
         public bool applyRootMotion = false;
+
+        
         
         protected virtual void Awake()
         {
@@ -59,5 +61,7 @@ namespace PA
         {
             
         }
+
+        
     }
 }

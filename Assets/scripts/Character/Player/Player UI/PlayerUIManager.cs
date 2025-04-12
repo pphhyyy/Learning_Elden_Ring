@@ -13,6 +13,9 @@ namespace PA
         [Header("NETWORK JOIN")]
         [SerializeField] bool startGameAsClient;
 
+        [HideInInspector] public PlayerUIHudManager playerUIHudManager;
+
+
         private void Awake()
         {
             if(instance == null)
@@ -23,6 +26,8 @@ namespace PA
             {
                 Destroy(gameObject);
             }
+
+            playerUIHudManager = GetComponentInChildren<PlayerUIHudManager>();
         }
 
         public void Start()
