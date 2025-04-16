@@ -171,6 +171,13 @@ namespace PA
                 }
             }
         }
+    
+        public void LoadGameFromCharacterSlot()
+        {
+            WorldSaveGameManager.instance.currentCharacterSlotBeingUsed = characterSlot;
+            WorldSaveGameManager.instance.LoadGame();
+        }
+    
     }
 }
 

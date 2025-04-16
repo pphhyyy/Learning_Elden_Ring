@@ -117,17 +117,39 @@ namespace PA
             return fileName;
         }
 
-        public void CreateNewGame()
+        public void AttemptToCreateNewGame()
         {
+            // 初始化存档文件读写器
+            saveFileDataWriter = new SaveFIleDataWriter();
+            saveFileDataWriter.saveDataDirectoryPath = Application.persistentDataPath;
             // 根据当前使用的角色槽位决定文件名
-            saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(currentCharacterSlotBeingUsed);
+            saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_01);
+            
+            if (!saveFileDataWriter.CheckToSeeIfFileExists())
+            {
+                //  如果当前槽位没有数据，就新建一个
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_01;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
 
-            Debug.Log("CreateNewGame");
-            // 创建新的角色数据对象
-            currentCharacterData = new CharacterSaveData();
+            }
+            // 根据当前使用的角色槽位决定文件名
+            saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_02);
 
-            // 可在此添加初始化默认数据的逻辑
-            // 例如：currentCharacterData.health = 100;
+            if (!saveFileDataWriter.CheckToSeeIfFileExists())
+            {
+                //  如果当前槽位没有数据，就新建一个
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_02;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+
+            }
+
+            // 如果没有足够的空间 , 弹出一个窗口  提醒玩家 没有空位了 
+            TitleScreenManager.Instance.DisplayNoFreeCharacterSlotPopUp();
+
         }
 
 
@@ -207,7 +229,7 @@ namespace PA
         public IEnumerator LoadWorldScene()
         {
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(worldSceneIndex);
-
+            player.LoadGameDataFromCurrentCharacterData(ref currentCharacterData);
             yield return null;
         }
 
