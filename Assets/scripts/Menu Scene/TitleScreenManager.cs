@@ -19,14 +19,21 @@ namespace PA
         [SerializeField] Button loadMenuReturnButton;
         [SerializeField] Button mainMenuLoadGameButton;
         [SerializeField] Button MainMenunewGameButton;
+        [SerializeField] Button noCharacterSlotsOkeyButton;
+        [SerializeField] Button deletCharacterPopUpConfirmButton;
+
 
         [Header("Pop Ups")]
         [SerializeField] GameObject noCharacterSlotsPopUp;
-        [SerializeField] Button noCharacterSlotsOkeyButton;
+        [SerializeField] GameObject deleteCharacterSlotPopUp;
+
+        [Header("Current Slot")]
+        public CharacterSlot currentSelectedSlot = CharacterSlot.NO_SLOT;
+
 
         private void Awake()
         {
-            if(Instance == null)
+            if (Instance == null)
             {
                 Instance = this;
             }
@@ -76,7 +83,47 @@ namespace PA
             MainMenunewGameButton.Select();
 
         }
-    }
 
+
+        // 角色 slot 
+        public void SelectCharacterSLot(CharacterSlot characterSlot)
+        {
+            currentSelectedSlot = characterSlot;
+        }
+
+        public void SelectNoSlot()
+        {
+            currentSelectedSlot = CharacterSlot.NO_SLOT;
+        }
+
+        public void AttemptToDeleteCharacterSlot()
+        {
+
+            if (currentSelectedSlot != CharacterSlot.NO_SLOT)
+            {
+                deleteCharacterSlotPopUp.SetActive(true);
+                deletCharacterPopUpConfirmButton.Select();
+            }
+
+        }
+
+        public void DeletCharacterSlot()
+        {
+            deleteCharacterSlotPopUp.SetActive(false);
+            WorldSaveGameManager.instance.DeleteGame(currentSelectedSlot);
+
+            //删除一个 slot 后，关闭 load menu 然后再次打开，以更新slot 的现实 
+            titleScreenLoadMenu.SetActive(false);
+            titleScreenLoadMenu.SetActive(true);
+             
+            loadMenuReturnButton.Select();
+        }
+
+        public void CloseDeletCharacerPopUp()
+        {
+            deleteCharacterSlotPopUp.SetActive(false);
+            loadMenuReturnButton.Select();
+        }
+    }
 }
 

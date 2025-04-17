@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 namespace PA
 {
@@ -72,6 +74,8 @@ namespace PA
         // 将当前游戏数据保存到角色存档结构体（通过引用修改）
         public void SaveGameDataToCurrentCharacterData(ref CharacterSaveData currentCharacterData)
         { 
+
+            currentCharacterData.sceneIndex = SceneManager.GetActiveScene().buildIndex;
             // 从网络管理器获取角色名并保存
             currentCharacterData.characterName = playerNetworkManager.characterName.Value.ToString();
 

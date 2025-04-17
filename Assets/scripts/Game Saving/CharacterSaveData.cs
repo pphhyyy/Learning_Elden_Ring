@@ -7,6 +7,9 @@ namespace PA {
   // 这个类只是作为数据保存和加载时的一个模版数据结构而已，不会附加到实际的游戏对象上
   public class CharacterSaveData 
   {
+    [Header("SCENE INDEX")]
+    public int sceneIndex = 1;
+
     [Header("Character Name")]
     public string characterName = "Character";
 
