@@ -26,7 +26,9 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
      
      [Header("Dodge")]
      private Vector3 rollDirection;
-     [SerializeField] float dodgeStaminaCost = 25; 
+     [SerializeField] float dodgeStaminaCost = 25;
+     [Header("Jump")]
+     [SerializeField] float jumpStaminaCost = 25; 
 
     protected override void Awake()
     {
@@ -184,6 +186,28 @@ public class PlayerLocalmotionManager : CharacterLocalMotionManager
         {
             player.playerNetworkManager.currentStamina.Value -= sprintingStaminaCost * Time.deltaTime;
         }
+    }
+
+    public void AttemptToPerfomJump() 
+    {
+        if(player.isPerfromingAction)
+            return; // 如果player当前正在执行动作 就不应该接受后面这些东西，直接返回
+        if(player.playerNetworkManager.currentStamina.Value <=0) // 耐力为零 不能翻滚
+            return;
+
+        if(player.isJumping)
+            return;
+
+        // 如果还未接地，就不应该处理jump 的输入 
+        if(player.isGrounded)
+            return;
+
+        // 如果当前是双手握持武器，就要处理双手的jump 动画，否则就默认播放 单手武器版的 动画 
+        player.playerAnimatorManager.PlayTargetActionAnimtion("Main_Jump_01",false);
+        player.isJumping = true;
+
+        player.playerNetworkManager.currentStamina.Value -= jumpStaminaCost;
+
     }
 }
 

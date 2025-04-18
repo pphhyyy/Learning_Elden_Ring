@@ -18,7 +18,9 @@ namespace PA
         public bool isPerfromingAction = false; // 是否正在执行动作，如果是，就不应该接受其他动作的触发 
         public bool canRotate = true;  
         public bool canMove = true;
-        public bool applyRootMotion = false;
+        public bool applyRootMotion = false; 
+        public bool isJumping = false;
+        public bool isGrounded = true;
 
         
         
@@ -33,6 +35,7 @@ namespace PA
 
         protected virtual void Update()
         {
+            animator.SetBool("IsGrounded",isGrounded);
             if (IsOwner)
             {
                 // 如果是该对象的主机 ,那么该对象 的位置 就应该和主机位置同步 
