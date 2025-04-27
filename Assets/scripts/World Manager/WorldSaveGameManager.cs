@@ -12,6 +12,8 @@ namespace PA
 
         public PlayerManager player;
 
+        
+
         [Header("SAVE/LOAD")]
         [SerializeField] bool saveGame;
         [SerializeField] bool loadGame;
@@ -339,6 +341,7 @@ namespace PA
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(worldSceneIndex);
             // AsyncOperation loadOperation = SceneManager.LoadSceneAsync(currentCharacterData.sceneIndex);
             player.LoadGameDataFromCurrentCharacterData(ref currentCharacterData);
+            player.playerLocalmotionManager.gamestart = true;
             yield return null;
         }
 

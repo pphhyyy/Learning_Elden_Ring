@@ -28,7 +28,7 @@ namespace PA
         protected override void Update()
         {
             base.Update();
-            Debug.Log("Remote Debug from Mac ");
+            //Debug.Log("Remote Debug from Mac ");
             //如果当前对象不属于本机,就不要对他更新移动 
             if (!IsOwner)
                 return;
@@ -88,6 +88,7 @@ namespace PA
         // 从角色存档结构体加载游戏数据（通过引用修改）
         public void LoadGameDataFromCurrentCharacterData(ref CharacterSaveData currentCharacterData)
         {
+            Debug.Log("加载！位置");
             // 将存档的角色名同步到网络管理器
             playerNetworkManager.characterName.Value = currentCharacterData.characterName;
 

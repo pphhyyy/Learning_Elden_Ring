@@ -495,6 +495,7 @@ GameObject:
   - component: {fileID: -574936901803238996}
   - component: {fileID: 2900904484837642250}
   - component: {fileID: 2164291305850148199}
+  - component: {fileID: 8075266799108906127}
   m_Layer: 6
   m_Name: player_mac
   m_TagString: Untagged
@@ -679,13 +680,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5b5f62782b27541a2f7730023e95f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamestart: 0
+  gravityForce: -20
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
-  groundCheckSphereRadius: 0.3
+  groundCheckSphereRadius: 0.24
   yVelocity: {x: 0, y: 0, z: 0}
   groundedYVelocity: -20
   fallStartYVelocity: -5
+  originDiff: 0.1
   horizontalMovement: 0
   vertialMovement: 0
   moveAmount: 0
@@ -695,7 +699,10 @@ MonoBehaviour:
   rotationSpeed: 15
   sprintingStaminaCost: 10
   dodgeStaminaCost: 25
-  jumpStaminaCost: 25
+  jumpStaminaCost: 10
+  jumpHeight: 2
+  jumpForwardSpeed: 4
+  freeFallSpeed: 2
 --- !u!143 &-4331485654322875563
 CharacterController:
   m_ObjectHideFlags: 0
@@ -708,7 +715,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.84
-  m_Radius: 0.19
+  m_Radius: 0.24
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.0001
@@ -869,6 +876,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staminaRegenAmount: 2
   staminaRegenerationDelay: 2
+--- !u!114 &8075266799108906127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914073143726340837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69bf558b50aa25448e205658519d0f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectToTest: {fileID: 11400000, guid: 9ba478fcb8599034ab14ed5dcdfa5f50, type: 2}
+  processEffect: 0
 --- !u!1 &2043832879364774956
 GameObject:
   m_ObjectHideFlags: 0

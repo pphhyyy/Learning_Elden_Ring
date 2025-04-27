@@ -122,6 +122,7 @@ namespace PA
             HandleCameraMovementInput();
             HandleDodgeInput();
             HandleSprintInput();
+            HandleJumpInput();
         }
 
 
@@ -186,7 +187,12 @@ namespace PA
     
         private void HandleJumpInput()
         {
-            
+            if(jumpInput)
+            {
+                jumpInput = false;
+
+                player.playerLocalmotionManager.AttemptToPerfomJump();
+            }
         }
     
     }
