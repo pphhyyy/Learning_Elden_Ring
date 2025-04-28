@@ -60,20 +60,19 @@ namespace PA
                 PlayerInputManager.instance.player = this;
                 WorldSaveGameManager.instance.player = this;
 
+                // “升级” 时，更新最大血量和最大耐力值
+                playerNetworkManager.vitality.OnValueChanged += playerNetworkManager.SetNewMaxHealthValue;
+                playerNetworkManager.endurance.OnValueChanged += playerNetworkManager.SetNewMaxStaminaValue;
+                // 更新ui状态栏显示 （体力条和耐力条）
+                playerNetworkManager.currentHealth.OnValueChanged += PlayerUIManager.instance.playerUIHudManager.SetNewHealthValue;
                 playerNetworkManager.currentStamina.OnValueChanged += PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue;
                 playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenTimer;
-
-
-                playerNetworkManager.maxStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
-                playerNetworkManager.currentStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
-
-                PlayerUIManager.instance.playerUIHudManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
             }
         }
 
         // 将当前游戏数据保存到角色存档结构体（通过引用修改）
         public void SaveGameDataToCurrentCharacterData(ref CharacterSaveData currentCharacterData)
-        { 
+        {
 
             currentCharacterData.sceneIndex = SceneManager.GetActiveScene().buildIndex;
             // 从网络管理器获取角色名并保存
@@ -83,10 +82,16 @@ namespace PA
             currentCharacterData.xPosition = transform.position.x;
             currentCharacterData.yPosition = transform.position.y;
             currentCharacterData.zPosition = transform.position.z;
+
+            currentCharacterData.vitality = playerNetworkManager.vitality.Value;
+            currentCharacterData.endurance = playerNetworkManager.endurance.Value;
+
+            currentCharacterData.currentStamina = playerNetworkManager.currentHealth.Value ;
+            currentCharacterData.currentStamina = playerNetworkManager.currentStamina.Value ;
         }
 
         // 从角色存档结构体加载游戏数据（通过引用修改）
-        public void LoadGameDataFromCurrentCharacterData(ref CharacterSaveData currentCharacterData)
+        public void  LoadGameDataFromCurrentCharacterData(ref CharacterSaveData currentCharacterData)
         {
             Debug.Log("加载！位置");
             // 将存档的角色名同步到网络管理器
@@ -99,6 +104,17 @@ namespace PA
                 currentCharacterData.zPosition
             );
             transform.position = myPosition;
+
+            playerNetworkManager.vitality.Value = currentCharacterData.vitality;
+            playerNetworkManager.endurance.Value = currentCharacterData.endurance;
+
+
+            playerNetworkManager.maxHealth.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.maxHealth.Value);
+            playerNetworkManager.maxStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
+            playerNetworkManager.currentHealth.Value = currentCharacterData.currentStamina;
+            playerNetworkManager.currentStamina.Value = currentCharacterData.currentStamina;
+            PlayerUIManager.instance.playerUIHudManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
+
         }
 
 

@@ -132,7 +132,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_01;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame();
                 return;
 
             }
@@ -144,7 +144,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_02;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame();
                 return;
 
             }
@@ -156,7 +156,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_03;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame();
                 return;
 
             }
@@ -168,7 +168,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_04;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame();
                 return;
 
             }
@@ -180,7 +180,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_05;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame();
                 return;
 
             }
@@ -192,7 +192,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_06;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame();
                 return;
 
             }
@@ -204,7 +204,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_07;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame();
                 return;
 
             }
@@ -216,7 +216,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_08;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame(); 
                 return;
 
             }
@@ -228,7 +228,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_09;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame();
                 return;
 
             }
@@ -240,7 +240,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_10;
                 currentCharacterData = new CharacterSaveData();
-                StartCoroutine(LoadWorldScene());
+                NewGame();
                 return;
 
             }
@@ -248,6 +248,13 @@ namespace PA
             // 如果没有足够的空间 , 弹出一个窗口  提醒玩家 没有空位了 
             TitleScreenManager.Instance.DisplayNoFreeCharacterSlotPopUp();
 
+        }
+
+        private void NewGame()
+        {
+            // 在角色刚刚初始化获取各种初始属性后，立即保存，然后立即加载
+            SaveGame();
+            StartCoroutine(LoadWorldScene());
         }
 
 
