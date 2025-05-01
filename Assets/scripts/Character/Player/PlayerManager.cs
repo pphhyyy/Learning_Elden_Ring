@@ -8,6 +8,11 @@ namespace PA
 {
     public class PlayerManager : CharacterManager
     {
+
+
+        [Header("Debug MENU")]
+        [SerializeField] bool respawnCharacter = false; // 角色重生 
+
         [HideInInspector] public PlayerLocalmotionManager playerLocalmotionManager;
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerNetworkManager playerNetworkManager;
@@ -34,6 +39,10 @@ namespace PA
                 return;
 
             playerLocalmotionManager.HandleAllMovement();
+
+            playerStatsManager.RegenarateStamina();
+
+            DebugMenu();
 
         }
 
@@ -68,6 +77,39 @@ namespace PA
                 playerNetworkManager.currentStamina.OnValueChanged += PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue;
                 playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenTimer;
             }
+
+            playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
+        }
+
+        public override IEnumerator ProcessDeathEvent(bool manuallySelectDeathAnimation = false)
+        {
+            Debug.Log("ProcessDeathEvent");
+            if (IsOwner)
+            {
+                // 调用 PlayerUIManager 实例的弹出窗口管理器，显示 "YOU DIED" 弹出窗口
+                PlayerUIManager.instance.playerUIPopUpManager.SendYouDiedPopUp();
+            }
+
+            // 调用基类的 ProcessDeathEvent 方法
+            return base.ProcessDeathEvent(manuallySelectDeathAnimation);
+        }
+
+        public override void ReviveCharacter()
+        {
+            Debug.Log("Revive !");
+            base.ReviveCharacter();
+
+            if (IsOwner)
+            {
+                // 恢复当前生命值和耐力值为最大值
+                playerNetworkManager.currentHealth.Value = playerNetworkManager.maxHealth.Value;
+                playerNetworkManager.currentStamina.Value = playerNetworkManager.maxStamina.Value;
+
+                // 恢复专注点（注释中提到，但未实现具体逻辑）
+
+                // 播放重生效果
+                playerAnimatorManager.PlayTargetActionAnimtion("Empty", false);
+            }
         }
 
         // 将当前游戏数据保存到角色存档结构体（通过引用修改）
@@ -86,12 +128,12 @@ namespace PA
             currentCharacterData.vitality = playerNetworkManager.vitality.Value;
             currentCharacterData.endurance = playerNetworkManager.endurance.Value;
 
-            currentCharacterData.currentStamina = playerNetworkManager.currentHealth.Value ;
-            currentCharacterData.currentStamina = playerNetworkManager.currentStamina.Value ;
+            currentCharacterData.currentHealth = playerNetworkManager.currentHealth.Value;
+            currentCharacterData.currentStamina = playerNetworkManager.currentStamina.Value;
         }
 
         // 从角色存档结构体加载游戏数据（通过引用修改）
-        public void  LoadGameDataFromCurrentCharacterData(ref CharacterSaveData currentCharacterData)
+        public void LoadGameDataFromCurrentCharacterData(ref CharacterSaveData currentCharacterData)
         {
             Debug.Log("加载！位置");
             // 将存档的角色名同步到网络管理器
@@ -111,13 +153,20 @@ namespace PA
 
             playerNetworkManager.maxHealth.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.maxHealth.Value);
             playerNetworkManager.maxStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
-            playerNetworkManager.currentHealth.Value = currentCharacterData.currentStamina;
+            playerNetworkManager.currentHealth.Value = currentCharacterData.currentHealth;
             playerNetworkManager.currentStamina.Value = currentCharacterData.currentStamina;
             PlayerUIManager.instance.playerUIHudManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
 
         }
 
-
+        private void DebugMenu()
+        {
+            if (respawnCharacter)
+            {
+                respawnCharacter = false;
+                ReviveCharacter();
+            }
+        }
     }
 
 }

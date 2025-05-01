@@ -10,6 +10,9 @@ namespace PA
     {
         public static WorldCharacterEffectManager instance;
 
+        [Header("Damage")]
+        public TakeDamageEffect takeDamageEffect;
+
         [SerializeField] List<InstantCharacterEffect> instantEffects;
 
         private void Awake()

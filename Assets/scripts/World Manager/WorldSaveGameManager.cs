@@ -66,6 +66,7 @@ namespace PA
             if (saveGame)
             {
                 saveGame = false;
+                Debug.Log("保存！！！！！");
                 SaveGame();
             }
 
@@ -252,6 +253,10 @@ namespace PA
 
         private void NewGame()
         {
+            // 这里角色的初始生命力和体力 要在这里单独设置，不能再ui界面上设置
+            player.playerNetworkManager.vitality.Value = 15;
+            player.playerNetworkManager.endurance.Value = 10;
+
             // 在角色刚刚初始化获取各种初始属性后，立即保存，然后立即加载
             SaveGame();
             StartCoroutine(LoadWorldScene());

@@ -5419,6 +5419,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3486260925612567363, guid: d53c76aefb93db94db1a7b4911553ffa,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4490918283256514592, guid: d53c76aefb93db94db1a7b4911553ffa,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -5458,11 +5463,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6228511411600887046, guid: d53c76aefb93db94db1a7b4911553ffa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6231936460455676174, guid: d53c76aefb93db94db1a7b4911553ffa,
         type: 3}
       propertyPath: m_Name
       value: 'Player UI Manager '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7087640304190869302, guid: d53c76aefb93db94db1a7b4911553ffa,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8159349521918167830, guid: d53c76aefb93db94db1a7b4911553ffa,
         type: 3}
