@@ -22,3 +22,11 @@ public enum CharacterSlot
   CharacterSlot_10,
   NO_SLOT
 }
+public enum WeaponModelSlot
+{
+    RightHand, // 右手
+    LeftHand,  // 左手
+    // Right Hips // 右臀部
+    // Left Hips  // 左臀部
+    // Back       // 背部
+}

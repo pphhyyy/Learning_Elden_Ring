@@ -90,6 +90,12 @@ namespace PA
         {
             if(player.isJumping)
             {
+                // 嗯。是不是起跳以后一段时间再移动好点？
+                int a = 100;
+                while(a>0)
+                {
+                    a--;
+                }
                 player.characterController.Move(jumpDirection * jumpForwardSpeed * Time.deltaTime);
             }
         }
@@ -112,6 +118,8 @@ namespace PA
         private void HandleGroundMovement()
         {
             if (!player.canMove)
+                return;
+            if (player.isJumping)
                 return;
             GetMovementValues();
             //这里玩家移动的方向 将有 player camera 来 决定 

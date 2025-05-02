@@ -17,6 +17,7 @@ namespace PA
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerNetworkManager playerNetworkManager;
         [HideInInspector] public PlayerStatsManager playerStatsManager;
+        [HideInInspector] public PlayerInventoryManager playerInventoryManager;
 
         protected override void Awake()
         {
@@ -26,7 +27,7 @@ namespace PA
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
-
+            playerInventoryManager = GetComponent<PlayerInventoryManager>(); 
 
         }
 

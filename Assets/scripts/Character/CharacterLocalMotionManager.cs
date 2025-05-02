@@ -19,6 +19,7 @@ namespace PA
         [SerializeField] protected float groundedYVelocity = -20; //角色在地面上受到的力
         [SerializeField] protected float fallStartYVelocity = -5; //角色下落时的力
         [SerializeField] float originDiff = 0.1f;
+        //[SerializeField] float CheckSphere_diff = 0f;
         protected bool fallingVelocityHAsBeenset = false;
         protected float inAirTimer = 0;
 
@@ -74,8 +75,9 @@ namespace PA
             //characterManager.isGrounded = Physics.Raycast(characterManager.transform.position,Vector3.down, out hit,groundCheckDistance,groundLayer);
             //Debug.DrawRay(origin, Vector3.down * groundCheckDistance, Color.red);
 
-            // 球形检查 
-            characterManager.isGrounded = Physics.CheckSphere(characterManager.transform.position, groundCheckSphereRadius, groundLayer);
+            // 球形检查 这里应该等角色滞空一段时间以后才检查，不然如果刚刚跳起然后胶囊体膜到了地面，就会判定接地，然后掉下来
+            Vector3 orignal_check_position = characterManager.transform.position + Vector3.up * originDiff;
+            characterManager.isGrounded = Physics.CheckSphere(orignal_check_position, groundCheckSphereRadius, groundLayer);
 
             // 向下的球形检查
             // characterManager.isGrounded = Physics.SphereCast(origin ,groundCheckSphereRadius,Vector3.down,out hit,groundCheckDistance,groundLayer);
@@ -85,7 +87,8 @@ namespace PA
         {
             //Vector3 origin = characterManager.transform.position + Vector3.up * originDiff;
             // 在gizmos 上 画出 地面检测半径的 球体 
-            Gizmos.DrawSphere(characterManager.transform.position, groundCheckSphereRadius);
+            Vector3 orignal_check_position = characterManager.transform.position + Vector3.up * originDiff;
+            Gizmos.DrawSphere(orignal_check_position, groundCheckSphereRadius);
         }
     }
 

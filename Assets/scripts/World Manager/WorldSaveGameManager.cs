@@ -12,7 +12,7 @@ namespace PA
 
         public PlayerManager player;
 
-        
+
 
         [Header("SAVE/LOAD")]
         [SerializeField] bool saveGame;
@@ -57,6 +57,8 @@ namespace PA
 
         private void Start()
         {
+            // 锁定帧率为60FPS
+            Application.targetFrameRate = 60;
             DontDestroyOnLoad(gameObject);
             LoadAllCharacterProfiles();
         }
@@ -217,7 +219,7 @@ namespace PA
                 //  如果当前槽位没有数据，就新建一个
                 currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_08;
                 currentCharacterData = new CharacterSaveData();
-                NewGame(); 
+                NewGame();
                 return;
 
             }
@@ -306,7 +308,7 @@ namespace PA
 
             saveFileDataWriter = new SaveFIleDataWriter();
             saveFileDataWriter.saveDataDirectoryPath = Application.persistentDataPath;
-            saveFileDataWriter.saveFileName =  DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(characterSlot);
+            saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(characterSlot);
 
             saveFileDataWriter.DeletSaveFile();
         }
