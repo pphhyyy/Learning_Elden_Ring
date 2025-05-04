@@ -87,8 +87,8 @@ namespace PA
         {
             //Vector3 origin = characterManager.transform.position + Vector3.up * originDiff;
             // 在gizmos 上 画出 地面检测半径的 球体 
-            Vector3 orignal_check_position = characterManager.transform.position + Vector3.up * originDiff;
-            Gizmos.DrawSphere(orignal_check_position, groundCheckSphereRadius);
+            //Vector3 orignal_check_position = characterManager.transform.position + Vector3.up * originDiff;
+            //  Gizmos.DrawSphere(orignal_check_position, groundCheckSphereRadius);
         }
     }
 

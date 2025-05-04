@@ -40,6 +40,12 @@ namespace PA
             characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
         }
 
+        protected virtual void Start()
+        {
+            Debug.Log("IgnoreMyOwnColliders : Start");
+            IgnoreMyOwnColliders();
+        }
+
         protected virtual void Update()
         {
             animator.SetBool("IsGrounded", isGrounded);
@@ -98,9 +104,33 @@ namespace PA
 
         public virtual void ReviveCharacter()
         {
-            
+
         }
 
+        protected virtual void IgnoreMyOwnColliders()
+        {
+            Collider characterControllerCollider = GetComponent<Collider>();
+            Collider[] damageableCharacterColliders = GetComponentsInChildren<Collider>();
+            List<Collider> ignoreColliders = new List<Collider>();
+
+            // 将所有可被伤害的角色碰撞器添加到将用于忽略碰撞的列表中
+            foreach (var collider in damageableCharacterColliders)
+            {
+                ignoreColliders.Add(collider);
+            }
+
+            // 将角色控制器的碰撞器添加到将用于忽略碰撞的列表中
+            ignoreColliders.Add(characterControllerCollider);
+
+            // 遍历列表中的每个碰撞器，并忽略它们之间的碰撞
+            foreach (var collider in ignoreColliders)
+            {
+                foreach (var otherCollider in ignoreColliders)
+                {
+                    Physics.IgnoreCollision(collider, otherCollider, true);
+                }
+            }
+        }
 
     }
 }

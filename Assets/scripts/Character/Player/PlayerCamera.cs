@@ -113,7 +113,7 @@ public class PlayerCamera : MonoBehaviour
         direction.Normalize();
         if (Physics.SphereCast(cameraPivotTransform.position , cameraCollisionRadius , direction, out hit , Mathf.Abs(targetCameraZPosition),collideWithLayer))
         {
-            Debug.Log("摄像机射线碰撞");
+            //Debug.Log("摄像机射线碰撞");
             float distanceFromHitObject = Vector3.Distance(cameraPivotTransform.position,hit.point);
             targetCameraZPosition = -(distanceFromHitObject - cameraCollisionRadius);
         }

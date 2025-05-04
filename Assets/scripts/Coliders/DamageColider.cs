@@ -24,8 +24,8 @@ namespace PA
 
         private void OnTriggerEnter(Collider other)
         {
-            CharacterManager damageTarget = other.GetComponent<CharacterManager>();
-            Debug.Log("OnTriggerEnter :" + damageTarget.gameObject.name);
+            CharacterManager damageTarget = other.GetComponentInParent<CharacterManager>();
+            Debug.Log("OnTriggerEnter :" + other.gameObject.name);
             if (damageTarget != null)
             {
                 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
