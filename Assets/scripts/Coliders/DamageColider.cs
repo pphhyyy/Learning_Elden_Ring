@@ -6,6 +6,9 @@ namespace PA
 {
     public class DamageColider : MonoBehaviour
     {
+        [Header("Collider")]
+        protected Collider damageCollider;
+
         [Header("Damage")]
         public float physicalDamage = 0; // （待办）拆分为“标准”、“打击”、“斩击”和“穿刺”
         public float magicDamage = 0;
@@ -57,7 +60,19 @@ namespace PA
 
             damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
         }
+        
 
+        public virtual void EnableDamageCollider()
+        {
+            damageCollider.enabled = true;
+        }
+
+        public virtual void DisableDamageCollider()
+        {
+            damageCollider.enabled = false;
+            // 清空之前记录的 collider 遇见的 目标对象的列表 
+            charactersDamaged.Clear();
+        }
 
     }
 

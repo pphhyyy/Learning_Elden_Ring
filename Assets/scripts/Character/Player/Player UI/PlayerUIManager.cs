@@ -42,6 +42,7 @@ namespace PA
                 startGameAsClient = false;
                 //为了作为客户端接入服务器，这里需要先关闭 （玩家端）的网络主机
                 NetworkManager.Singleton.Shutdown();
+                Debug.Log("Close NetWork Client !");
                 //之后再作为客户端 打开 
                 NetworkManager.Singleton.StartClient();
             }

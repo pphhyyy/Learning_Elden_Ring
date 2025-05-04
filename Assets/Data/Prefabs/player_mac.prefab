@@ -534,7 +534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4205424627
+  GlobalObjectIdHash: 1363419223
   InScenePlacedSourceGlobalObjectIdHash: 1363419223
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -651,6 +651,10 @@ MonoBehaviour:
         byte0059: 0
         byte0060: 0
         byte0061: 0
+  currentRightHandWeaponID:
+    m_InternalValue: 0
+  currentLeftHandWeaponID:
+    m_InternalValue: 0
 --- !u!114 &8688264486778750420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -677,11 +681,13 @@ MonoBehaviour:
   isJumping: 0
   isGrounded: 1
   respawnCharacter: 0
+  switchRightWeapon: 0
   playerLocalmotionManager: {fileID: 0}
   playerAnimatorManager: {fileID: 0}
   playerNetworkManager: {fileID: 0}
   playerStatsManager: {fileID: 0}
   playerInventoryManager: {fileID: 0}
+  playerEquipmentManager: {fileID: 0}
 --- !u!114 &2164291305850148199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -743,10 +749,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e6fde14004e134187f2f072daeadae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentRightHandWeapon: {fileID: 11400000, guid: 04433b667725ae54d83f55065d1c48d2,
+  currentRightHandWeapon: {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2,
     type: 2}
-  currentLeftHandWaepon: {fileID: 11400000, guid: 04433b667725ae54d83f55065d1c48d2,
+  currentLeftHandWaepon: {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2,
     type: 2}
+  weaponInRightHandSlots:
+  - {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2, type: 2}
+  - {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2, type: 2}
+  - {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2, type: 2}
+  rightHandWeaponIndex: 0
+  weaponInLeftHandSlots:
+  - {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2, type: 2}
+  - {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2, type: 2}
+  - {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2, type: 2}
+  leftHandWeaponIndex: 0
 --- !u!114 &6473207609482480704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,6 +777,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightHandSlot: {fileID: 0}
   leftHandSlot: {fileID: 0}
+  rightWeaponManager: {fileID: 0}
+  leftWeaponManager: {fileID: 0}
   rightHandWeaponModel: {fileID: 0}
   leftHandWeaponModel: {fileID: 0}
 --- !u!114 &7518610007758584625

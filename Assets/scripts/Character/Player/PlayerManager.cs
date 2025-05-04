@@ -12,12 +12,14 @@ namespace PA
 
         [Header("Debug MENU")]
         [SerializeField] bool respawnCharacter = false; // 角色重生 
+        [SerializeField] bool switchRightWeapon = false;
 
         [HideInInspector] public PlayerLocalmotionManager playerLocalmotionManager;
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerNetworkManager playerNetworkManager;
         [HideInInspector] public PlayerStatsManager playerStatsManager;
         [HideInInspector] public PlayerInventoryManager playerInventoryManager;
+        [HideInInspector] public PlayerEquipmentManager playerEquipmentManager; 
 
         protected override void Awake()
         {
@@ -28,6 +30,7 @@ namespace PA
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>(); 
+            playerEquipmentManager = GetComponent<PlayerEquipmentManager>(); 
 
         }
 
@@ -80,6 +83,9 @@ namespace PA
             }
 
             playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
+            playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChange;
+            playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
+
         }
 
         public override IEnumerator ProcessDeathEvent(bool manuallySelectDeathAnimation = false)
@@ -166,6 +172,12 @@ namespace PA
             {
                 respawnCharacter = false;
                 ReviveCharacter();
+            }
+
+            if(switchRightWeapon)
+            {
+                switchRightWeapon = false;
+                playerEquipmentManager.SwitchRightWeapon();
             }
         }
     }

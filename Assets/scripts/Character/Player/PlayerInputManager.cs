@@ -121,7 +121,7 @@ namespace PA
             HandlePlayerMovementInput();
             HandleCameraMovementInput();
             HandleDodgeInput();
-            HandleSprintInput();
+            //HandleSprintInput();
             HandleJumpInput();
         }
 
