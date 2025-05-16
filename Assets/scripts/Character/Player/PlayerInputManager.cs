@@ -33,7 +33,7 @@ namespace PA
         [SerializeField] bool dodgeInput = false;
         [SerializeField] bool sprintInput = false;
         [SerializeField] bool jumpInput = false;
-
+        [SerializeField] bool RB_Input = false;
         private void Awake()
         {
             if (instance == null)
@@ -50,6 +50,12 @@ namespace PA
             SceneManager.activeSceneChanged += OnSceneChange;
 
             instance.enabled = false;
+
+            if (playerControls != null)
+            {
+                playerControls.Disable();
+            }
+
         }
 
         private void OnSceneChange(Scene oldScene, Scene newScene)
@@ -58,11 +64,21 @@ namespace PA
             {
                 //如果当前场景是 世界场景 ,那么激活这里的 inputmanager 
                 instance.enabled = true;
+
+                if (playerControls != null)
+                {
+                    playerControls.Enable();
+                }
             }
             else
             {
                 // 这里设置是为了不让角色在 world scene 以外从场景,例如开始时的界面,因为wasd 的输入而到处跑 ,  
                 instance.enabled = false;
+
+                if (playerControls != null)
+                {
+                    playerControls.Disable();
+                }
             }
         }
 
@@ -77,6 +93,7 @@ namespace PA
                 playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
                 playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
                 playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
+                playerControls.PlayerActions.RB.performed += i => RB_Input = true;
 
                 //这里 sprint 是按下设置true，抬起设置false
                 playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
@@ -123,6 +140,7 @@ namespace PA
             HandleDodgeInput();
             //HandleSprintInput();
             HandleJumpInput();
+            HandRBInput();
         }
 
 
@@ -184,17 +202,29 @@ namespace PA
                 player.playerNetworkManager.isSprinting.Value = false;
             }
         }
-    
+
         private void HandleJumpInput()
         {
-            if(jumpInput)
+            if (jumpInput)
             {
                 jumpInput = false;
 
                 player.playerLocalmotionManager.AttemptToPerfomJump();
             }
         }
-    
+
+        private void HandRBInput()
+        {
+            if (RB_Input)
+            {
+                RB_Input = false;
+                // TODO: 如果我们打开了一个用户界面窗口，返回并什么都不做
+                player.playerNetworkManager.SetCharacterActionHand(true);
+                // TODO: 如果我们双手持握武器，使用双手动作
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentRightHandWeapon.oh_RB_Action, player.playerInventoryManager.currentRightHandWeapon);
+            }
+        }
+
     }
 
 }

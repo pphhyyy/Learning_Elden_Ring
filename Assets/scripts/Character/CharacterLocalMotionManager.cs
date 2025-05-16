@@ -8,7 +8,7 @@ namespace PA
     public class CharacterLocalMotionManager : MonoBehaviour
     {
         CharacterManager characterManager;
-        public bool gamestart = false;
+        //public bool gamestart = false;
 
         [Header("Ground Check & Jumping")]
         [SerializeField] protected float gravityForce = -5.55f;
@@ -33,8 +33,9 @@ namespace PA
         protected virtual void Update()
         {
 
+            
             HandleGroundCheck();
-            if (gamestart)
+            if (true)
             {
                 if (characterManager.isGrounded)
                 {
@@ -49,7 +50,7 @@ namespace PA
                 else
                 {
                     // 如果我们没有跳跃，并且下落速度尚未设置
-                    if (!characterManager.isJumping && !fallingVelocityHAsBeenset)
+                    if (!characterManager.characterNetworkManager.isJumping.Value && !fallingVelocityHAsBeenset)
                     {
                         fallingVelocityHAsBeenset = true;
                         yVelocity.y = fallStartYVelocity;

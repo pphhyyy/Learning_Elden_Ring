@@ -41,6 +41,9 @@ namespace PA
 
         // 基于物品的动作 (RB, RT, LB, LT按键)
 
+        [Header("Actions")]
+        public WeaponItemAction oh_RB_Action; // 单手 右缓冲动作
+
         // 战技系统
 
         // 格挡音效

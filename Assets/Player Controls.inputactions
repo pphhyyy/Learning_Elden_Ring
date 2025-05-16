@@ -96,6 +96,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RB",
+                    "type": "Button",
+                    "id": "9d3c2d36-2d5a-45d9-8791-9d01fb8ac270",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Sprint",
                     "type": "PassThrough",
                     "id": "cf3142f0-39a7-48de-9073-0e3b0fe1b805",
@@ -136,6 +145,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e2f65543-e761-4996-add0-9dcb6002c671",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

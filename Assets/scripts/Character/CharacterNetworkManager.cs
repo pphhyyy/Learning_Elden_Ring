@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Unity.Netcode;
 using Unity.Mathematics;
+using Unity.Netcode;
+using UnityEngine;
 
 namespace PA
 {
@@ -31,17 +31,20 @@ namespace PA
 
         [Header("Flags")]
         public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> isJumping = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [Header("Resources")]
         public NetworkVariable<int> currentHealth = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<int> maxHealth = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-        
+        public NetworkVariable<int> maxHealth = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
         public NetworkVariable<float> currentStamina = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        public NetworkVariable<int> maxStamina = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        public NetworkVariable<int> maxStamina = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [Header("Stats")]
         public NetworkVariable<int> vitality = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<int> endurance = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+
 
         protected virtual void Awake()
         {
@@ -98,6 +101,44 @@ namespace PA
         //服务器调用 客户端执行 
 
         private void PerformActionAnimationFromServer(string animationID, bool applyRootMotion)
+        {
+            //播放动画
+            character.applyRootMotion = applyRootMotion;
+            character.animator.CrossFade(animationID, 0.2f);
+        }
+
+        //从任何客户端调用的函数，将信息从客户端到服务器 每当要播放动画的时候，都会请求服务器 RPC
+        //所有charatcer 调用 PlayTargetActionAnimtion 的时候 都会调用一次  NotifyTheServerOfActionAnimationServerRpc 
+        //以通知服务器，而服务器 用客户端传递过来的参数 调用 PlayActionAnimationForAllClientsClientRpc
+        //让所有clinet 都更新对应的动画  
+        [ServerRpc]
+        public void NotifyTheServerOfAttackActionAnimationServerRpc(ulong clientID, string animationID, bool applyRootMotion)
+        {
+            //通知服务器，这边的动作附带有 动画
+            if (IsServer)
+            {
+                //如果是本机作为服务器，那么就应该通知其他所有客户端，要播放对应的动画
+                PlayAttackActionAnimationForAllClientsClientRpc(clientID, animationID, applyRootMotion);
+            }
+        }
+        //有客户端调用，并在服务器/主机上 接受 并执行
+
+
+
+        //服务器调用 client RPC 通知所有客户端播放服务器中存在的动画信息，
+        [ClientRpc]
+        public void PlayAttackActionAnimationForAllClientsClientRpc(ulong clientID, string animationID, bool applyRootMotion)
+        {
+            //如果得到的 clientID 就是本机的 id 那么就不需要响应这个动画事件了，因为本机本地已经播放了一次，没必要播放第二次
+            if (clientID != NetworkManager.Singleton.LocalClientId)
+            {
+                //如果这个clientID 不是本机的，表示他们是客户端，需要在本机上播放他们动作的动画
+                PerformAttackActionAnimationFromServer(animationID, applyRootMotion);
+            }
+        }
+        //服务器调用 客户端执行 
+
+        private void PerformAttackActionAnimationFromServer(string animationID, bool applyRootMotion)
         {
             //播放动画
             character.applyRootMotion = applyRootMotion;

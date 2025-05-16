@@ -563,6 +563,7 @@ GameObject:
   - component: {fileID: 1608153076577945522}
   - component: {fileID: -8044199900284462566}
   - component: {fileID: 8688264486778750420}
+  - component: {fileID: -4908810930203594188}
   - component: {fileID: 2164291305850148199}
   - component: {fileID: -1111893607795190316}
   - component: {fileID: -8281785355730892295}
@@ -646,6 +647,8 @@ MonoBehaviour:
     m_InternalValue: 0
   isSprinting:
     m_InternalValue: 0
+  isJumping:
+    m_InternalValue: 0
   currentHealth:
     m_InternalValue: 0
   maxHealth:
@@ -727,9 +730,15 @@ MonoBehaviour:
         byte0059: 0
         byte0060: 0
         byte0061: 0
+  currentWeaponBeingUsed:
+    m_InternalValue: 0
   currentRightHandWeaponID:
     m_InternalValue: 0
   currentLeftHandWeaponID:
+    m_InternalValue: 0
+  isUsingRightHand:
+    m_InternalValue: 0
+  isUsingLeftHand:
     m_InternalValue: 0
 --- !u!114 &8688264486778750420
 MonoBehaviour:
@@ -754,7 +763,6 @@ MonoBehaviour:
   canRotate: 1
   canMove: 1
   applyRootMotion: 0
-  isJumping: 0
   isGrounded: 1
   respawnCharacter: 0
   switchRightWeapon: 0
@@ -764,6 +772,20 @@ MonoBehaviour:
   playerStatsManager: {fileID: 0}
   playerInventoryManager: {fileID: 0}
   playerEquipmentManager: {fileID: 0}
+  playerCombatManager: {fileID: 0}
+--- !u!114 &-4908810930203594188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914073143726340837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ab4dc4532df9b48a0456d73cac85f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeaponBeingUsed: {fileID: 0}
 --- !u!114 &2164291305850148199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -790,7 +812,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5b5f62782b27541a2f7730023e95f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gamestart: 0
   gravityForce: -20
   groundLayer:
     serializedVersion: 2
@@ -830,8 +851,8 @@ MonoBehaviour:
   currentLeftHandWaepon: {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2,
     type: 2}
   weaponInRightHandSlots:
-  - {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2, type: 2}
-  - {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2, type: 2}
+  - {fileID: 11400000, guid: 36e9264604b38af419a9bbb5f751037e, type: 2}
+  - {fileID: 11400000, guid: 04433b667725ae54d83f55065d1c48d2, type: 2}
   - {fileID: 11400000, guid: 5b0a8b5ec7080ef42ac54dd4ad9c09a2, type: 2}
   rightHandWeaponIndex: 0
   weaponInLeftHandSlots:

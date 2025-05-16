@@ -88,7 +88,7 @@ namespace PA
 
         private void HandleJumpingMovement()
         {
-            if(player.isJumping)
+            if(player.playerNetworkManager.isJumping.Value)
             {
                 // 嗯。是不是起跳以后一段时间再移动好点？
                 int a = 100;
@@ -119,7 +119,7 @@ namespace PA
         {
             if (!player.canMove)
                 return;
-            if (player.isJumping)
+            if (player.playerNetworkManager.isJumping.Value)
                 return;
             GetMovementValues();
             //这里玩家移动的方向 将有 player camera 来 决定 
@@ -236,7 +236,7 @@ namespace PA
             if (player.playerNetworkManager.currentStamina.Value <= 0) // 耐力为零 不能翻滚
                 return;
 
-            if (player.isJumping)
+            if (player.playerNetworkManager.isJumping.Value)
                 return;
 
             // 如果还未接地，就不应该处理jump 的输入 
@@ -245,7 +245,7 @@ namespace PA
 
             // 如果当前是双手握持武器，就要处理双手的jump 动画，否则就默认播放 单手武器版的 动画 
             player.playerAnimatorManager.PlayTargetActionAnimtion("Main_Jump_01", false);
-            player.isJumping = true;
+            player.playerNetworkManager.isJumping.Value = true;
 
             player.playerNetworkManager.currentStamina.Value -= jumpStaminaCost;
 
@@ -276,8 +276,10 @@ namespace PA
 
         public void ApplyJumpingVelocity()
         {
-            Debug.Log("跳");
+            Debug.Log("跳" + jumpHeight);
             yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
+        
+
         }
     }
 

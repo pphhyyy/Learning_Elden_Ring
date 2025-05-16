@@ -18,7 +18,11 @@ public class ResetActionFlag : StateMachineBehaviour
         character.isPerfromingAction = false; //表示现在已经没有在执行动作了 ，重置 isPerfromingAction
         character.canMove = true;
         character.canRotate = true; 
-        character.isJumping = false;
+        if (character.IsOwner)
+        {
+            character.characterNetworkManager.isJumping.Value = false;
+        }
+        
         //动作结束以后就不应该再使用动画上面的rootmotion了，
         //这里启用rootmotion会导致其他那些不需要rootmotion的动画也会激活rootmotion，并叠加到原来的速度上面
         character.applyRootMotion = false; // 手动实现的rootmotion，用下面被标注的 也行

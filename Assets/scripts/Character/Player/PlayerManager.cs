@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace PA
@@ -19,8 +19,8 @@ namespace PA
         [HideInInspector] public PlayerNetworkManager playerNetworkManager;
         [HideInInspector] public PlayerStatsManager playerStatsManager;
         [HideInInspector] public PlayerInventoryManager playerInventoryManager;
-        [HideInInspector] public PlayerEquipmentManager playerEquipmentManager; 
-
+        [HideInInspector] public PlayerEquipmentManager playerEquipmentManager;
+        [HideInInspector] public PlayerCombatManager playerCombatManager;
         protected override void Awake()
         {
             base.Awake();
@@ -29,9 +29,9 @@ namespace PA
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
-            playerInventoryManager = GetComponent<PlayerInventoryManager>(); 
-            playerEquipmentManager = GetComponent<PlayerEquipmentManager>(); 
-
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
+            playerCombatManager = GetComponent<PlayerCombatManager>();
         }
 
         protected override void Update()
@@ -82,9 +82,19 @@ namespace PA
                 playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenTimer;
             }
 
+            // 状态 
             playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
+
+            // 装备 
             playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChange;
             playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
+            playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBeingUsedIDChange;
+            // 连接时，如果我们是这个角色的所有者，但我们不是服务器，会把角色删除，然后将我们的角色数据重新加载到一个新实例化的角色上
+            // 如果我们是服务器，我们不运行这个操作，因为作为主机，它们已经加载好了，不需要重新加载数据
+            if (IsOwner && !IsServer)
+            {
+                LoadGameDataFromCurrentCharacterData(ref WorldSaveGameManager.instance.currentCharacterData);
+            }
 
         }
 
@@ -128,7 +138,7 @@ namespace PA
             currentCharacterData.characterName = playerNetworkManager.characterName.Value.ToString();
 
             // 分别存储角色位置的XYZ坐标
-            currentCharacterData.xPosition = transform.position.x;
+             currentCharacterData.xPosition = transform.position.x;
             currentCharacterData.yPosition = transform.position.y;
             currentCharacterData.zPosition = transform.position.z;
 
@@ -174,7 +184,7 @@ namespace PA
                 ReviveCharacter();
             }
 
-            if(switchRightWeapon)
+            if (switchRightWeapon)
             {
                 switchRightWeapon = false;
                 playerEquipmentManager.SwitchRightWeapon();

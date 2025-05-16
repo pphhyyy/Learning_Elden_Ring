@@ -24,7 +24,7 @@ namespace PA
         public bool canRotate = true;
         public bool canMove = true;
         public bool applyRootMotion = false;
-        public bool isJumping = false;
+        // public bool isJumping = false;
         public bool isGrounded = true;
 
 

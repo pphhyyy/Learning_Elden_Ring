@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Netcode;
+using UnityEngine;
 namespace PA
 {
     public class CharacterAnimatorManager : MonoBehaviour
@@ -11,7 +11,7 @@ namespace PA
         int vertical;
         int horizontal;
 
-        protected virtual  void Awake()
+        protected virtual void Awake()
         {
             character = GetComponent<CharacterManager>();
 
@@ -21,20 +21,20 @@ namespace PA
         }
 
         //由playerinputmanger 直接调用 
-        public void UpdateAnimatorMovementParameters(float horizontalValue , float verticalValue,bool isSprinting)
+        public void UpdateAnimatorMovementParameters(float horizontalValue, float verticalValue, bool isSprinting)
         {
             float horizontalAmount = horizontalValue;
             float verticalAmount = verticalValue;
-            if(isSprinting)
+            if (isSprinting)
             {
-                verticalAmount =2;
-            } 
-            
+                verticalAmount = 2;
+            }
+
             //OPTION 1 
             //按原本的值输入,最后的动画会有混合效果 
             //但在这个项目中,我们本来就在 player input manager 里面 设置了 输入值 的钳制 , 输入值 只有 0 0.5 1 所以实际上这里不需要 option 2 
-            character.animator.SetFloat(horizontal,horizontalAmount,0.1f,Time.deltaTime);
-            character.animator.SetFloat(vertical,verticalAmount,0.1f,Time.deltaTime);
+            character.animator.SetFloat(horizontal, horizontalAmount, 0.1f, Time.deltaTime);
+            character.animator.SetFloat(vertical, verticalAmount, 0.1f, Time.deltaTime);
             // 这里设置 0.1f,Time.deltaTime 可以让动画 从 idle 到 walk 的过渡更平滑一些 
 
             //OPTION 2 
@@ -44,7 +44,7 @@ namespace PA
             // float snappedVertical = 0;
 
             // #region Horizontal
-            
+
 
             // if (horizontalValue > 0 && horizontalValue <= 0.5f)
             // {
@@ -98,16 +98,16 @@ namespace PA
             // character.animator.SetFloat("Vertical",snappedVertical);
 
         }
-    
-        public virtual void PlayTargetActionAnimtion 
-            (string targteAnimation , 
-             bool  isPermormingAction , 
-             bool applyRootMotion = true , 
-             bool canRotate = false,  
-             bool canMove = false ) 
-        {   
+
+        public virtual void PlayTargetActionAnimtion
+            (string targteAnimation,
+             bool isPermormingAction,
+             bool applyRootMotion = true,
+             bool canRotate = false,
+             bool canMove = false)
+        {
             character.applyRootMotion = applyRootMotion; //要为目标动作播放的动画，是否要启动root motion 功能，这里默认为true ；
-            character.animator.CrossFade(targteAnimation , 0.2f);
+            character.animator.CrossFade(targteAnimation, 0.2f);
 
             //这里 isPermormingAction 表示当前对象正在执行动画，其他动作不应该打断他的动画播放 
             //也就是是否允许停止当前动画的播放，转而去执行下一个动画
@@ -117,7 +117,34 @@ namespace PA
             character.canRotate = canRotate;
 
             //还需要告诉 网络端(服务器 )，我们这边的角色在他们哪里要播放动画，不然角色动画效果就只有本地能看见  
-            character.characterNetworkManager.NotifyTheServerOfActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targteAnimation,applyRootMotion);
+            character.characterNetworkManager.NotifyTheServerOfActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targteAnimation, applyRootMotion);
         }
-     }
+
+
+        public virtual void PlayTargetAttackActionAnimtion
+            (string targteAnimation,
+             bool isPermormingAction,
+             bool applyRootMotion = true,
+             bool canRotate = false,
+             bool canMove = false)
+        {
+            // 跟踪上次执行的攻击（用于连招）
+            // 跟踪当前攻击类型（轻击、重击等）
+            // 更新动画集为当前武器的动画
+            // 判定我们的攻击是否能被格挡
+            // 告知网络我们的“正在攻击”标志已激活（用于反击伤害等）
+
+            character.applyRootMotion = applyRootMotion;
+            character.animator.CrossFade(targteAnimation, 0.2f);
+            character.isPerfromingAction = isPermormingAction;
+            character.canRotate = canRotate;
+            character.canMove = canMove;
+
+            // 告知服务器/主机我们播放了一个动画，并让其他在场的人也播放该动画
+            character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targteAnimation, applyRootMotion);
+        }
+
+
+
+    }
 }
