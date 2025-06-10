@@ -157,42 +157,42 @@ namespace PA
 
         //左手武器 
 
-                public void SwitchLeftWeapon()
+        public void SwitchLeftWeapon()
         {
             if (!player.IsOwner)
                 return;
-        
+
             player.playerAnimatorManager.PlayTargetActionAnimtion("Swap_Left_Weapon_01", false, true, true, true);
-        
+
             // 艾尔登法环武器切换
             // 1. 检查是否有主武器以外的其他武器，如果有，永远不要切换到空手状态，在武器1和武器2之间轮换
             // 2. 如果没有，则切换到空手状态，然后跳过另一个空槽并切换回来。在返回主武器之前不要处理两个空槽
-        
+
             WeaponItem selectedWeapon = null;
-        
+
             // 如果我们正在双持，则禁用双持
             // 检查我们的武器索引（我们有3个槽位，所以有3个可能的数字）
             // 禁用双持模式（如果我们正在双持）
-        
+
             // 将索引加1以切换到下一个潜在武器
             player.playerInventoryManager.leftHandWeaponIndex += 1;
-        
+
             // 如果索引超出范围，将其重置为位置#1（0）
             if (player.playerInventoryManager.leftHandWeaponIndex < 0 || player.playerInventoryManager.leftHandWeaponIndex > 2)
             {
                 player.playerInventoryManager.leftHandWeaponIndex = 0;
-        
+
                 // 我们检查是否持有多于一把武器
                 float weaponCount = 0;
                 WeaponItem firstWeapon = null;
                 int firstWeaponPosition = 0;
-        
+
                 for (int i = 0; i < player.playerInventoryManager.weaponInLeftHandSlots.Length; i++)
                 {
                     if (player.playerInventoryManager.weaponInLeftHandSlots[i].itemID != WorldItemDataBase.Instance.unarmedWeapon.itemID)
                     {
                         weaponCount += 1;
-        
+
                         if (firstWeapon == null)
                         {
                             firstWeapon = player.playerInventoryManager.weaponInLeftHandSlots[i];
@@ -200,7 +200,7 @@ namespace PA
                         }
                     }
                 }
-        
+
                 if (weaponCount <= 1)
                 {
                     player.playerInventoryManager.leftHandWeaponIndex = -1;
@@ -214,7 +214,7 @@ namespace PA
                 }
                 return;
             }
-        
+
             foreach (WeaponItem weapon in player.playerInventoryManager.weaponInLeftHandSlots)
             {
                 // 检查下一个武器是不是“空手”武器
@@ -225,15 +225,15 @@ namespace PA
                     player.playerNetworkManager.currentLeftHandWeaponID.Value = player.playerInventoryManager.weaponInLeftHandSlots[player.playerInventoryManager.leftHandWeaponIndex].itemID;
                     return;
                 }
-        
+
             }
-        
+
             if (selectedWeapon == null && player.playerInventoryManager.leftHandWeaponIndex <= 2)
             {
                 SwitchLeftWeapon();
             }
         }
-        
+
         public void LoadLeftWeapon()
         {
             if (player.playerInventoryManager.currentLeftHandWaepon != null)
@@ -244,7 +244,39 @@ namespace PA
                 //指定武器的 damage  到这个碰撞体上
                 leftWeaponManager = leftHandWeaponModel.GetComponent<WeaponManager>();
                 leftWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftHandWaepon);
-        
+
+            }
+        }
+
+        // 伤害碰撞体
+        public void OpenDamageCollider()
+        {
+            Debug.Log("OpenDamageCollider ! ");
+            // 开启右手武器伤害碰撞体
+            if (player.playerNetworkManager.isUsingRightHand.Value)
+            {
+                rightWeaponManager.meleeDamageCollider.EnableDamageCollider();
+            }
+            // 开启左手武器伤害碰撞体
+            else if (player.playerNetworkManager.isUsingLeftHand.Value)
+            {
+                leftWeaponManager.meleeDamageCollider.EnableDamageCollider();
+            }
+            // 播放嗖的音效
+        }
+
+        public void CloseDamageCollider()
+        {
+            Debug.Log("CloseDamageCollider ! ");
+            // 关闭右手武器伤害碰撞体
+            if (player.playerNetworkManager.isUsingRightHand.Value)
+            {
+                rightWeaponManager.meleeDamageCollider.DisableDamageCollider();
+            }
+            // 关闭左手武器伤害碰撞体
+            else if (player.playerNetworkManager.isUsingLeftHand.Value)
+            {
+                leftWeaponManager.meleeDamageCollider.DisableDamageCollider();
             }
         }
     }

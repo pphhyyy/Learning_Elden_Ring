@@ -111,6 +111,9 @@ namespace PA
         //所有charatcer 调用 PlayTargetActionAnimtion 的时候 都会调用一次  NotifyTheServerOfActionAnimationServerRpc 
         //以通知服务器，而服务器 用客户端传递过来的参数 调用 PlayActionAnimationForAllClientsClientRpc
         //让所有clinet 都更新对应的动画  
+
+        // 攻击动画 
+
         [ServerRpc]
         public void NotifyTheServerOfAttackActionAnimationServerRpc(ulong clientID, string animationID, bool applyRootMotion)
         {
@@ -144,6 +147,101 @@ namespace PA
             character.applyRootMotion = applyRootMotion;
             character.animator.CrossFade(animationID, 0.2f);
         }
+
+        // 伤害 
+        // 伤害
+        [ServerRpc(RequireOwnership = false)]
+        // 0个引用
+        public void NotifyTheServerOfCharacterDamageServerRpc(
+            ulong damagedCharacterID,
+            ulong characterCausingDamageID,
+            float physicalDamage,
+            float magicDamage,
+            float fireDamage,
+            float holyDamage,
+            float poiseDamage,
+            float angleHitFrom,
+            float contactPointX,
+            float contactPointY,
+            float contactPointZ)
+        {
+            if (IsServer)
+            {
+                NotifyTheServerOfCharacterDamageClientRpc(damagedCharacterID,
+                    characterCausingDamageID,
+                    physicalDamage,
+                    magicDamage,
+                    fireDamage,
+                    holyDamage,
+                    poiseDamage,
+                    angleHitFrom,
+                    contactPointX,
+                    contactPointY,
+                    contactPointZ);
+            }
+        }
+
+        [ClientRpc]
+        // 0个引用
+        public void NotifyTheServerOfCharacterDamageClientRpc(
+            ulong damagedCharacterID,
+            ulong characterCausingDamageID,
+            float physicalDamage,
+            float magicDamage,
+            float fireDamage,
+            float holyDamage,
+            float poiseDamage,
+            float angleHitFrom,
+            float contactPointX,
+            float contactPointY,
+            float contactPointZ)
+        {
+            ProcessCharacterDamageFromServer(damagedCharacterID,
+                    characterCausingDamageID,
+                    physicalDamage,
+                    magicDamage,
+                    fireDamage,
+                    holyDamage,
+                    poiseDamage,
+                    angleHitFrom,
+                    contactPointX,
+                    contactPointY,
+                    contactPointZ);
+        }
+
+
+        public void ProcessCharacterDamageFromServer(
+            ulong damagedCharacterID,
+            ulong characterCausingDamageID,
+            float physicalDamage,
+            float magicDamage,
+            float fireDamage,
+            float holyDamage,
+            float poiseDamage,
+            float angleHitFrom,
+            float contactPointX,
+            float contactPointY,
+            float contactPointZ)
+        {
+            CharacterManager damagedCharacter = NetworkManager.Singleton.SpawnManager.SpawnedObjects[damagedCharacterID].gameObject.GetComponent<CharacterManager>();
+            CharacterManager characterCausingDamage = NetworkManager.Singleton.SpawnManager.SpawnedObjects[characterCausingDamageID].gameObject.GetComponent<CharacterManager>();
+            TakeDamageEffect damageEffect = Instantiate(WorldCharacterEffectManager.instance.takeDamageEffect);
+
+            damageEffect.physicalDamage = physicalDamage;
+            damageEffect.magicDamage = magicDamage;
+            damageEffect.fireDamage = fireDamage;
+            damageEffect.holyDamage = holyDamage;
+            damageEffect.poiseDamage = poiseDamage;
+            damageEffect.angleHitFrom = angleHitFrom;
+            damageEffect.contactPoint = new Vector3(contactPointX, contactPointY, contactPointZ);
+            damageEffect.characterCausingDamage = characterCausingDamage;
+
+            damagedCharacter.characterEffectsManager.ProcessInstantEffect(damageEffect);
+        }
+
+
+
+
 
     }
 }

@@ -28,15 +28,18 @@ namespace PA
         public float poiseDamage = 10;
         // 攻击时的进攻性韧性加成
 
-        // 武器修正参数
+        // 武器修正参数  如第二次攻击的伤害更大 
+        [Header("Attack Modifiers")]
+        public float light_Attack_01_Modifier = 1.1f;
         // 轻攻击修正
         // 重攻击修正  
         // 暴击伤害修正等
 
-        [Header("Stamina Costs")]
+        [Header("Stamina Costs Modifiers ")]
         public int baseStaminaCost = 20;
         // 奔跑攻击耐力消耗修正
         // 轻攻击耐力消耗修正
+        public float lightAttackStaminaCostMultiplier =  0.9f;
         // 重攻击耐力消耗修正等
 
         // 基于物品的动作 (RB, RT, LB, LT按键)

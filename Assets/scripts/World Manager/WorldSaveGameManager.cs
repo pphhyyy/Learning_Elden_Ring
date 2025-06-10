@@ -44,7 +44,7 @@ namespace PA
         private void Awake()
         {
 
-            //单利模式  
+            //单例模式  
             if (instance == null)
             {
                 instance = this;

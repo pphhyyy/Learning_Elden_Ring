@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PA
 {
     // 继承自InstantCharacterEffect的公共类TakeDamageEffect
-    [CreateAssetMenu(menuName ="Character Effects/Instant Effects/Take Damage")]
+    [CreateAssetMenu(menuName = "Character Effects/Instant Effects/Take Damage")]
     public class TakeDamageEffect : InstantCharacterEffect
     {
         // 标题：造成伤害的角色
@@ -75,13 +75,15 @@ namespace PA
             // 检查积累效果（中毒、流血等）
             // 播放受击音效
             // 播放受击视觉效果（血迹）
+            PlayDamageVFX(character);
+
 
             // 如果角色是AI，检查是否存在造成伤害的角色并寻找新目标
         }
 
         private void CalculateDamage(CharacterManager character)
         {
-            if(!character.IsOwner)
+            if (!character.IsOwner)
             {
                 return;
             }
@@ -97,19 +99,26 @@ namespace PA
 
             // 将所有伤害类型相加，并应用最终伤害
             finalDamageDealt = Mathf.RoundToInt(physicalDamage + magicDamage + fireDamage + lightningDamage + holyDamage);
-            
+
             if (finalDamageDealt <= 0)
             {
                 finalDamageDealt = 1;
             }
             Debug.Log("Final Damage Dealt: " + finalDamageDealt);
             character.characterNetworkManager.currentHealth.Value -= finalDamageDealt;
-            
+
             // 计算姿态伤害以确定角色是否会被击晕
             // CALCULATE POISE DAMAGE TO DETERMINE IF THE CHARACTER WILL BE STUNNED
 
         }
 
+        private void PlayDamageVFX(CharacterManager character)
+        {
+            Debug.Log("PlayDamageVFX");
+            // 如果我们有火焰伤害，播放火焰粒子
+            // 闪电伤害，闪电粒子 等等
+            character.characterEffectsManager.PlayBloodSplatterVFX(contactPoint);
+        }
     }
 }
 

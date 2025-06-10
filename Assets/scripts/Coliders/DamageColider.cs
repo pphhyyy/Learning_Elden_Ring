@@ -7,7 +7,7 @@ namespace PA
     public class DamageColider : MonoBehaviour
     {
         [Header("Collider")]
-        protected Collider damageCollider;
+        [SerializeField] protected Collider damageCollider;
 
         [Header("Damage")]
         public float physicalDamage = 0; // （待办）拆分为“标准”、“打击”、“斩击”和“穿刺”
@@ -22,7 +22,12 @@ namespace PA
         [Header("Characer Damaged")]
         protected List<CharacterManager> charactersDamaged = new List<CharacterManager>(); // 受伤角色列表
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void Awake()
+        {
+
+        }
+
+        protected virtual  void OnTriggerEnter(Collider other)
         {
             CharacterManager damageTarget = other.GetComponentInParent<CharacterManager>();
             Debug.Log("OnTriggerEnter :" + other.gameObject.name);
@@ -37,7 +42,7 @@ namespace PA
                 // 检查目标是否处于无敌状态
 
                 // 造成伤害
-                
+
                 DamageTarget(damageTarget);
             }
         }

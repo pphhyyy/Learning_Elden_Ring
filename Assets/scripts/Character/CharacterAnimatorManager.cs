@@ -122,7 +122,8 @@ namespace PA
 
 
         public virtual void PlayTargetAttackActionAnimtion
-            (string targteAnimation,
+            (AttackType attackType,
+            string targteAnimation,
              bool isPermormingAction,
              bool applyRootMotion = true,
              bool canRotate = false,
@@ -133,7 +134,7 @@ namespace PA
             // 更新动画集为当前武器的动画
             // 判定我们的攻击是否能被格挡
             // 告知网络我们的“正在攻击”标志已激活（用于反击伤害等）
-
+            character.characterCombatManager.currentAttackType = attackType;
             character.applyRootMotion = applyRootMotion;
             character.animator.CrossFade(targteAnimation, 0.2f);
             character.isPerfromingAction = isPermormingAction;

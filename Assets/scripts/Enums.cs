@@ -24,9 +24,14 @@ public enum CharacterSlot
 }
 public enum WeaponModelSlot
 {
-    RightHand, // 右手
-    LeftHand,  // 左手
-    // Right Hips // 右臀部
-    // Left Hips  // 左臀部
-    // Back       // 背部
+  RightHand, // 右手
+  LeftHand,  // 左手
+             // Right Hips // 右臀部
+             // Left Hips  // 左臀部
+             // Back       // 背部
+}
+
+public enum AttackType
+{
+  LightAttack01
 }

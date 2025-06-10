@@ -13,6 +13,9 @@ namespace PA
         [Header("Damage")]
         public TakeDamageEffect takeDamageEffect;
 
+        [Header("VFX")]
+        public  GameObject bloodSplatterVFX;
+
         [SerializeField] List<InstantCharacterEffect> instantEffects;
 
         private void Awake()
@@ -24,13 +27,19 @@ namespace PA
 
             GenerateEffectIDs();
         }
+        void Start()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
 
         private void GenerateEffectIDs()
         {
-            for(int i = 0 ; i < instantEffects.Count ; i++)
+            for (int i = 0; i < instantEffects.Count; i++)
             {
                 instantEffects[i].instantEffectID = i;
             }
         }
+
+        
     }
 }

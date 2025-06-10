@@ -29,7 +29,7 @@ namespace PA
 
             if (playerPerformingAction.playerNetworkManager.isUsingRightHand.Value)
             {
-                playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimtion(light_Attack_01, true);
+                playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimtion(AttackType.LightAttack01,light_Attack_01, true);
             }
             if (playerPerformingAction.playerNetworkManager.isUsingLeftHand.Value)
             {
