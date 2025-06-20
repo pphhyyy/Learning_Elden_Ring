@@ -63,6 +63,10 @@ namespace PA
             damageEffect.holyDamage = holyDamage;
             damageEffect.contactPoint = contactPoint;
 
+            // 将 damageEffect 的 angleHitFrom 变量，设置为 transform.forward（当前对象前方向量）和 damageTarget.transform.forward（伤害目标前方向量）
+            // 围绕 Vector3.up（世界空间向上向量）计算的带符号角度
+            damageEffect.angleHitFrom = Vector3.SignedAngle(characterCausingDamage.transform.forward, damageTarget.transform.forward, Vector3.up);
+
             switch (characterCausingDamage.characterCombatManager.currentAttackType)
             {
                 case AttackType.LightAttack01:

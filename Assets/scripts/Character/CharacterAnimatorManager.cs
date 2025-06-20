@@ -11,6 +11,26 @@ namespace PA
         int vertical;
         int horizontal;
 
+        [Header("Damage Animations")]
+
+        public string lastDamageAnimationPlayed;
+        [SerializeField] string hit_Forward_Medium_01 = "hit_Forward_Medium_01";
+        [SerializeField] string hit_Forward_Medium_02 = "hit_Forward_Medium_02";
+
+        [SerializeField] string hit_Backward_Medium_01 = "hit_Backward_Medium_01";
+        [SerializeField] string hit_Backward_Medium_02 = "hit_Backward_Medium_02";
+
+        [SerializeField] string hit_Left_Medium_01 = "hit_Left_Medium_01";
+        [SerializeField] string hit_Left_Medium_02 = "hit_Left_Medium_02";
+
+        [SerializeField] string hit_Right_Medium_01 = "hit_Right_Medium_01";
+        [SerializeField] string hit_Right_Medium_02 = "hit_Right_Medium_02";
+
+        public List<string> forward_Medium_Damage = new List<string>();
+        public List<string> backward_Medium_Damage = new List<string>();
+        public List<string> left_Medium_Damage = new List<string>();
+        public List<string> right_Medium_Damage = new List<string>();
+
         protected virtual void Awake()
         {
             character = GetComponent<CharacterManager>();
@@ -19,6 +39,47 @@ namespace PA
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
         }
+
+        protected virtual void Start()
+        {
+            forward_Medium_Damage.Add(hit_Forward_Medium_01);
+            forward_Medium_Damage.Add(hit_Forward_Medium_02);
+
+            backward_Medium_Damage.Add(hit_Backward_Medium_01);
+            backward_Medium_Damage.Add(hit_Backward_Medium_02);
+
+            left_Medium_Damage.Add(hit_Left_Medium_01);
+            left_Medium_Damage.Add(hit_Left_Medium_02);
+
+            right_Medium_Damage.Add(hit_Right_Medium_01);
+            right_Medium_Damage.Add(hit_Right_Medium_02);
+        }
+
+        public string GetRandomAnimationFromList(List<string> animationList)
+        {
+            List<string> finalList = new List<string>();
+
+            foreach (var item in animationList)
+            {
+                finalList.Add(item);
+            }
+
+            // 检查是否已播放过此伤害动画，避免重复播放
+            finalList.Remove(lastDamageAnimationPlayed);
+
+            // 检查列表中是否有空条目并移除
+            for (int i = finalList.Count - 1; i > -1; i--)
+            {
+                if (finalList[i] == null)
+                {
+                    finalList.RemoveAt(i);
+                }
+            }
+
+            int randomValue = Random.Range(0, finalList.Count);
+            return finalList[randomValue];
+        }
+
 
         //由playerinputmanger 直接调用 
         public void UpdateAnimatorMovementParameters(float horizontalValue, float verticalValue, bool isSprinting)
@@ -106,6 +167,7 @@ namespace PA
              bool canRotate = false,
              bool canMove = false)
         {
+            Debug.Log("Playing Animation: " + targteAnimation);
             character.applyRootMotion = applyRootMotion; //要为目标动作播放的动画，是否要启动root motion 功能，这里默认为true ；
             character.animator.CrossFade(targteAnimation, 0.2f);
 

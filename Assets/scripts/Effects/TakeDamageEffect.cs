@@ -71,6 +71,7 @@ namespace PA
             // 计算伤害
             CalculateDamage(character);
             // 检查伤害来自哪个方向
+            PlayDirectionalBasedDamageAnimation(character);
             // 播放受击动画 
             // 检查积累效果（中毒、流血等）
             // 播放受击音效
@@ -128,6 +129,46 @@ namespace PA
             character.characterSoundFXManager.PlaySoundFX(physicalDamageSFX);
             // 若火焰伤害大于 0，播放灼烧音效
             // 若闪电伤害大于 0，播放电击音效
+        }
+        private void PlayDirectionalBasedDamageAnimation(CharacterManager character)
+        {
+            if (!character.IsOwner)
+                return;
+            //当前poise 被打破 
+                poiseIsBroken = true;
+
+            if (angleHitFrom >= 145 && angleHitFrom <= 180)
+            {
+                // 根据命中角度，设置向前中等伤害 01 动画
+                damageAnimation = character.characterAnimatorManager.GetRandomAnimationFromList(character.characterAnimatorManager.forward_Medium_Damage);
+            }
+            else if (angleHitFrom <= -145 && angleHitFrom >= -180)
+            {
+                // 根据命中角度，设置向前中等伤害 01 动画
+                damageAnimation = character.characterAnimatorManager.GetRandomAnimationFromList(character.characterAnimatorManager.forward_Medium_Damage);
+            }
+            else if (angleHitFrom >= -45 && angleHitFrom <= 45)
+            {
+                // 根据命中角度，设置向后中等伤害 01 动画
+                damageAnimation = character.characterAnimatorManager.GetRandomAnimationFromList(character.characterAnimatorManager.backward_Medium_Damage);
+            }
+            else if (angleHitFrom >= -144 && angleHitFrom <= -45)
+            {
+                // 根据命中角度，设置向左中等伤害 01 动画
+                damageAnimation = character.characterAnimatorManager.GetRandomAnimationFromList(character.characterAnimatorManager.left_Medium_Damage);
+            }
+            else if (angleHitFrom >= 45 && angleHitFrom <= 144)
+            {
+                // 根据命中角度，设置向右中等伤害 01 动画
+                damageAnimation = character.characterAnimatorManager.GetRandomAnimationFromList(character.characterAnimatorManager.right_Medium_Damage);
+            }
+
+            // 如果韧性被打破，播放一个 stagger（摇晃、踉跄 ）的受击动画
+            if (poiseIsBroken)
+            {
+                character.characterAnimatorManager.lastDamageAnimationPlayed = damageAnimation;
+                character.characterAnimatorManager.PlayTargetActionAnimtion(damageAnimation, true);
+            }
         }
     }
 }

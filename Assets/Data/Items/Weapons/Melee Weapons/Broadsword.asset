@@ -15,17 +15,20 @@ MonoBehaviour:
   itemName: Broadsword
   itemIcon: {fileID: 21300000, guid: 9ab0d08003cc18d4b885bee7161f44fe, type: 3}
   itemDescrition: A normal Sword
-  itemID: 0
+  itemID: 2
   weaponModel: {fileID: 6123751155281237282, guid: 9fe0abc482a636d4cbfc29727c168830,
     type: 3}
   strengthREQ: 10
   dexREQ: 10
   intREQ: 0
   faithREQ: 0
-  physicalDamage: 118
+  physicalDamage: 20
   magicDamage: 0
   fireDamage: 0
   holyDamage: 0
   lightningDamage: 0
   poiseDamage: 25
+  light_Attack_01_Modifier: 1.1
   baseStaminaCost: 20
+  lightAttackStaminaCostMultiplier: 0.9
+  oh_RB_Action: {fileID: 0}
