@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -66,7 +67,7 @@ namespace PA
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
             if (IsOwner)
             {
                 PlayerCamera.instance.player = this; //如果这个player object 是 本机的，那么就给它的 playerCamera 的 player 变量复制到 this  
@@ -96,6 +97,24 @@ namespace PA
                 LoadGameDataFromCurrentCharacterData(ref WorldSaveGameManager.instance.currentCharacterData);
             }
 
+        }
+
+        private void OnClientConnectedCallback(ulong clientID)
+        {
+            WorldGameSessionManager.instance.AddPlayerToActivePlayersList(this);
+
+            // 如果我们是服务器，我们就是主机，所以无需加载玩家来同步他们
+            // 只有当你加入一个已活跃且你之前未参与的游戏时，才需要加载其他玩家的装备来同步
+            if (!IsServer && IsOwner)
+            {
+                foreach (var player in WorldGameSessionManager.instance.players)
+                {
+                    if (player != this)
+                    {
+                        player.LoadOtherPlayerCharacterWhenJoiningServer();
+                    }
+                }
+            }
         }
 
         public override IEnumerator ProcessDeathEvent(bool manuallySelectDeathAnimation = false)
@@ -138,7 +157,7 @@ namespace PA
             currentCharacterData.characterName = playerNetworkManager.characterName.Value.ToString();
 
             // 分别存储角色位置的XYZ坐标
-             currentCharacterData.xPosition = transform.position.x;
+            currentCharacterData.xPosition = transform.position.x;
             currentCharacterData.yPosition = transform.position.y;
             currentCharacterData.zPosition = transform.position.z;
 
@@ -174,6 +193,15 @@ namespace PA
             playerNetworkManager.currentStamina.Value = currentCharacterData.currentStamina;
             PlayerUIManager.instance.playerUIHudManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
 
+        }
+
+        public void LoadOtherPlayerCharacterWhenJoiningServer()
+        {
+            // 同步武器
+            playerNetworkManager.OnCurrentRightHandWeaponIDChange(0, playerNetworkManager.currentRightHandWeaponID.Value);
+            playerNetworkManager.OnCurrentLeftHandWeaponIDChange(0, playerNetworkManager.currentLeftHandWeaponID.Value);
+
+            // 护甲（此处代码未写完，仅翻译注释）
         }
 
         private void DebugMenu()

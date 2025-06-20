@@ -2361,6 +2361,25 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 846497245}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &853852519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3125501611419939625, guid: 1f1912cdea855f2469155038cf958ab3,
+    type: 3}
+  m_PrefabInstance: {fileID: 3125501609906788811}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &853852523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853852519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 443244c178e15ca43a36f2c76ad385d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  players: []
 --- !u!1 &866601651
 GameObject:
   m_ObjectHideFlags: 0
@@ -2585,6 +2604,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952084359}
   m_CullTransparentMesh: 1
+--- !u!1 &1042584273 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5548280774545101761, guid: 8fac34c371e267d4f99f1ed92b23acf5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1445791582}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1042584277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042584273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d067e56ed6fbe7945ad5120051a77dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeUntilDestoryed: 5
 --- !u!1 &1083759731
 GameObject:
   m_ObjectHideFlags: 0
@@ -6352,6 +6390,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3591192440390993169, guid: f5a8526dde49d5a4a860fbbca0662919,
+        type: 3}
+      propertyPath: physicalDamageSFX.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3591192440390993169, guid: f5a8526dde49d5a4a860fbbca0662919,
+        type: 3}
+      propertyPath: physicalDamageSFX.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 7cbd6cd765888ff418d01d98bd1ce9c2, type: 3}
+    - target: {fileID: 3591192440390993169, guid: f5a8526dde49d5a4a860fbbca0662919,
+        type: 3}
+      propertyPath: physicalDamageSFX.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3df9bbbc130ccb344af5f3fc793a630f, type: 3}
     - target: {fileID: 5644543594195809641, guid: f5a8526dde49d5a4a860fbbca0662919,
         type: 3}
       propertyPath: m_Name

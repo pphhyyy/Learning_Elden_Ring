@@ -74,6 +74,7 @@ namespace PA
             // 播放受击动画 
             // 检查积累效果（中毒、流血等）
             // 播放受击音效
+            PlayDamageSFX(character);
             // 播放受击视觉效果（血迹）
             PlayDamageVFX(character);
 
@@ -118,6 +119,15 @@ namespace PA
             // 如果我们有火焰伤害，播放火焰粒子
             // 闪电伤害，闪电粒子 等等
             character.characterEffectsManager.PlayBloodSplatterVFX(contactPoint);
+        }
+
+        private void PlayDamageSFX(CharacterManager character)
+        {
+            AudioClip physicalDamageSFX = WorldSoundFXManager.instance.ChooseRandomSFXFromArray(WorldSoundFXManager.instance.physicalDamageSFX);
+
+            character.characterSoundFXManager.PlaySoundFX(physicalDamageSFX);
+            // 若火焰伤害大于 0，播放灼烧音效
+            // 若闪电伤害大于 0，播放电击音效
         }
     }
 }

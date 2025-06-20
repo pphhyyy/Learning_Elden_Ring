@@ -19,6 +19,7 @@ namespace PA
         [HideInInspector] public CharacterEffectsManager characterEffectsManager;
         [HideInInspector] public CharacterAnimatorManager characterAnimatorManager;
         [HideInInspector] public CharacterCombatManager characterCombatManager;
+        [HideInInspector] public CharacterSoundFXManager characterSoundFXManager;
 
         [Header("Flag")]
         public bool isPerfromingAction = false; // 是否正在执行动作，如果是，就不应该接受其他动作的触发 
@@ -40,6 +41,7 @@ namespace PA
             characterEffectsManager = GetComponent<CharacterEffectsManager>();
             characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
             characterCombatManager = GetComponent<CharacterCombatManager>();
+            characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
         }
 
         protected virtual void Start()
